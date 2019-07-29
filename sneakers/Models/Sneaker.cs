@@ -42,3 +42,4 @@ namespace sneakers.Models
             IsSold = true;
         }
     }
+}
