@@ -206,6 +206,8 @@ namespace sneakers.Controllers
             {
                 try
                 {
+                    var currentUser = await GetCurrentUserAsync();
+                    sneaker.UserId = currentUser.Id;
                     sneaker.ImgPath = uniqueFileName;
                     _context.Update(sneaker);
                     await _context.SaveChangesAsync();
