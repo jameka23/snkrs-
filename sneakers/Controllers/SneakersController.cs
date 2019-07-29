@@ -221,6 +221,25 @@ namespace sneakers.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        // MY Sneakers, gets all the current user's sneakers 
+        public async Task<IActionResult> MySneakers()
+        {
+            // grab the current user
+            var currentUser = await GetCurrentUserAsync();
+            //var products = await _context.Product.Include(p => p.ProductType)
+            //    .Include(p => p.User)
+            //    .Where(p => p.User == currentUser)
+            //    .OrderByDescending(p => p.DateCreated).ToListAsync();\
+            var sneakers = await _context.Sneaker.Include(b => b.Brand)
+                .Include(c => c.Condition)
+                .Include(s => s.Size)
+                .Include(u => u.User)
+                .Where(u => u.User == currentUser).ToListAsync();
+
+
+            return View(sneakers);
+        }
+
         private bool SneakerExists(int id)
         {
             return _context.Sneaker.Any(e => e.SneakerId == id);

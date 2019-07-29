@@ -34,6 +34,7 @@ namespace sneakers.Models
         [Required]
         [DisplayFormat(DataFormatString = "{0:C}")]
         public double Price { get; set; }
+        [Display(Name = "Photo")]
         public string ImgPath { get; set; }
 
         [Required]
