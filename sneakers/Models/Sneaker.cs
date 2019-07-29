@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
@@ -11,6 +12,7 @@ namespace sneakers.Models
         [Key]
         public int SneakerId { get; set; }
         [Required]
+        [Display(Name = "Size")]
         public int SizeId { get; set; }
         [Required]
         public Size Size { get; set; }
@@ -19,11 +21,13 @@ namespace sneakers.Models
         [Required]
         public string Description { get; set; }
         [Required]
+        [Display(Name = "Brand")]
         public int BrandId { get; set; }
         [Required]
         public Brand Brand { get; set; }
         public bool IsSold { get; set; }
         [Required]
+        [Display(Name = "Condition")]
         public int ConditionId { get; set; }
         [Required]
         public Condition Condition { get; set; }
