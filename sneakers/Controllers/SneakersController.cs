@@ -33,10 +33,40 @@ namespace sneakers.Controllers
 
         // GET: Sneakers
         [Authorize]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchString, string SearchBar)
         {
-            var applicationDbContext = _context.Sneaker.Include(s => s.Brand).Include(s => s.Condition).Include(s => s.Size).Include(s => s.User);
-            return View(await applicationDbContext.ToListAsync());
+            ViewData["CurrentFilter"] = searchString;
+            ViewData["SearchBar"] = SearchBar;
+
+            var currentUser = GetCurrentUserAsync().Result;
+            IQueryable<Sneaker> sneakers = _context.Sneaker.Include(s => s.Brand).Include(s => s.Condition).Include(s => s.Size).Include(s => s.User);
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                switch (SearchBar)
+                {
+                    case "1":
+                        
+                        sneakers = sneakers.Where(s => s.Brand.BrandType.ToUpper().Contains(searchString.ToUpper()));
+                        break;
+                    case "2":
+                        sneakers = sneakers.Where(s => s.Size.ShoeSize.ToUpper().Contains(searchString.ToUpper()));
+                        break;
+                    case "3":
+                        sneakers = sneakers.Where(s => s.Condition.ConditionType.ToUpper().Contains(searchString.ToUpper()));
+                        break;
+                    default:
+                        //products.Where(p => p.Title.ToUpper().Contains(searchString.ToUpper())
+                        //               || p.City.ToUpper().Contains(searchString.ToUpper()))
+                        sneakers = sneakers.Where(s => s.Condition.ConditionType.ToUpper().Contains(searchString.ToUpper())
+                                            || s.Condition.ConditionType.ToUpper().Contains(searchString.ToUpper())
+                                            || s.Size.ShoeSize.ToUpper().Contains(searchString.ToUpper()));
+                        break;
+                }
+
+            }
+            
+            return View(sneakers);
         }
 
         // GET: Sneakers/Details/5
