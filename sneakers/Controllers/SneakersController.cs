@@ -66,7 +66,7 @@ namespace sneakers.Controllers
 
             }
             
-            return View(sneakers);
+            return View(await sneakers.ToListAsync());
         }
 
         // GET: Sneakers/Details/5
