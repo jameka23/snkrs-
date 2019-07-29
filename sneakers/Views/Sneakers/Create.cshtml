@@ -1,4 +1,4 @@
-﻿@model sneakers.Models.Sneaker
+﻿@model sneakers.Models.SneakersViewModels.SneakersCreateViewModel
 
 @{
     ViewData["Title"] = "Create";
@@ -13,49 +13,69 @@
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="SizeId" class="control-label"></label>
-                <select asp-for="SizeId" class ="form-control" asp-items="ViewBag.SizeId"></select>
+                <label asp-for="Sneaker.Title" class="control-label"></label>
+                <input asp-for="Sneaker.Title" class="form-control" />
+                <span asp-validation-for="Sneaker.Title" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Title" class="control-label"></label>
-                <input asp-for="Title" class="form-control" />
-                <span asp-validation-for="Title" class="text-danger"></span>
+                <label asp-for="Sneaker.Description" class="control-label"></label>
+                <input asp-for="Sneaker.Description" class="form-control" />
+                <span asp-validation-for="Sneaker.Description" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger"></span>
+                <label asp-for="Sneaker.SizeId" class="control-label"></label>
+                <select asp-for="Sneaker.SizeId" class="form-control" asp-items="@Model.SizeOptions"></select>
+                <span asp-validation-for="Sneaker.SizeId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="BrandId" class="control-label"></label>
-                <select asp-for="BrandId" class ="form-control" asp-items="ViewBag.BrandId"></select>
+                <label asp-for="Sneaker.BrandId" class="control-label"></label>
+                <select asp-for="Sneaker.BrandId" class="form-control" asp-items="@Model.BrandOptions"></select>
+                <span asp-validation-for="Sneaker.BrandId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Sneaker.ConditionId" class="control-label"></label>
+                <select asp-for="Sneaker.ConditionId" class="form-control" asp-items="@Model.ConditionOptions"></select>
+                <span asp-validation-for="Sneaker.ConditionId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Sneaker.Price" class="control-label"></label>
+                <input asp-for="Sneaker.Price" class="form-control" />
+                <span asp-validation-for="Sneaker.Price" class="text-danger"></span>
+            </div>
+            @*<div class="form-group">
+            <label asp-for="ImgPath" class="control-label"></label>
+            <input asp-for="ImgPath" class="form-control" />
+            <span asp-validation-for="ImgPath" class="text-danger"></span>
+        </div>*@
+            <div class="form-group">
+                <label asp-for="Photo" class="col-sm-2 col-form-label"></label>
+                <div class="col-sm-10">
+                    <div class="custom-file">
+                        <input asp-for="Photo" class="form-control custom-file-input">
+                        <label class="custom-file-label">Choose File...</label>
+                    </div>
+                </div>
             </div>
             <div class="form-group form-check">
                 <label class="form-check-label">
-                    <input class="form-check-input" asp-for="IsSold" /> @Html.DisplayNameFor(model => model.IsSold)
+                    <input class="form-check-input" asp-for="Sneaker.IsSold" /> @Html.DisplayNameFor(model => model.Sneaker.IsSold)
                 </label>
-            </div>
-            <div class="form-group">
-                <label asp-for="ConditionId" class="control-label"></label>
-                <select asp-for="ConditionId" class ="form-control" asp-items="ViewBag.ConditionId"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="Price" class="control-label"></label>
-                <input asp-for="Price" class="form-control" />
-                <span asp-validation-for="Price" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ImgPath" class="control-label"></label>
-                <input asp-for="ImgPath" class="form-control" />
-                <span asp-validation-for="ImgPath" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="UserId" class="control-label"></label>
-                <select asp-for="UserId" class ="form-control" asp-items="ViewBag.UserId"></select>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
+
+            @section Scripts {
+                <script>
+            $(document).ready(function () {
+                $('.custom-file-input').on("change", function () {
+                    var fileName = $(this).val().split("\\").pop();
+                    $(this).next('.custom-file-label').html(fileName);
+                });
+                @{await Html.RenderPartialAsync("_ValidationScriptsPartial");
+            });
+                </script>
+            }
         </form>
     </div>
 </div>
@@ -64,6 +84,6 @@
     <a asp-action="Index">Back to List</a>
 </div>
 
-@section Scripts {
+@*@section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+}*@

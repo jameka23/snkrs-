@@ -1,10 +1,14 @@
-﻿@model IEnumerable<sneakers.Models.Sneaker>
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+
+
+@model IEnumerable<sneakers.Models.Sneaker>
 
 @{
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>All Sneakers</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -36,14 +40,14 @@
             <th>
                 @Html.DisplayNameFor(model => model.ImgPath)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.User)
-            </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+        @foreach (var item in Model)
+        {
+            var photoPath = "~/images/" + (item.ImgPath ?? "noimage.jpg");
+
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Size.ShoeSize)
@@ -67,10 +71,8 @@
                 @Html.DisplayFor(modelItem => item.Price)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ImgPath)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.User.Id)
+                <img class="card-img-top imageThumbnail" src="~/images/@item.ImgPath"
+                     asp-append-version="true" />
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.SneakerId">Edit</a> |
@@ -78,6 +80,6 @@
                 <a asp-action="Delete" asp-route-id="@item.SneakerId">Delete</a>
             </td>
         </tr>
-}
+        }
     </tbody>
 </table>
