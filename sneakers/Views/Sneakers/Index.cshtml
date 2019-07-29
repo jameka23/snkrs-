@@ -47,39 +47,76 @@
         @foreach (var item in Model)
         {
             var photoPath = "~/images/" + (item.ImgPath ?? "noimage.jpg");
+            var currentUser = SignInManager.UserManager.GetUserId(User);
+            @if (item.UserId == currentUser)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Size.ShoeSize)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Title)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Brand.BrandType)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.IsSold)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Condition.ConditionType)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Price)
+                    </td>
+                    <td>
+                        <img class="card-img-top imageThumbnail" src="~/images/@item.ImgPath"
+                             asp-append-version="true" />
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.SneakerId">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@item.SneakerId">Details</a> |
+                        <a asp-action="Delete" asp-route-id="@item.SneakerId">Delete</a>
+                    </td>
+                </tr>
+            }
+            else
+            {
 
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Size.ShoeSize)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Brand.BrandType)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsSold)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Condition.ConditionType)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Price)
-            </td>
-            <td>
-                <img class="card-img-top imageThumbnail" src="~/images/@item.ImgPath"
-                     asp-append-version="true" />
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.SneakerId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.SneakerId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.SneakerId">Delete</a>
-            </td>
-        </tr>
+                <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Size.ShoeSize)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Brand.BrandType)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IsSold)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Condition.ConditionType)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
+                    <img class="card-img-top imageThumbnail" src="~/images/@item.ImgPath"
+                         asp-append-version="true" />
+                </td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.SneakerId">Details</a>
+                </td>
+            </tr>
+            }
         }
     </tbody>
 </table>

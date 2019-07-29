@@ -132,6 +132,25 @@ namespace sneakers.Controllers
         // GET: Sneakers/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+            /*
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var book = await _context.Book.FindAsync(id);
+            if (book == null)
+            {
+                return NotFound();
+            }
+            var viewModel = new BookEditViewModel
+            {
+                Book = book,
+                AvailableAuthors = await _context.Author.ToListAsync()
+            };
+            return View(viewModel);
+             */
+            // if the id that was passed in if null, then an error is thrown
             if (id == null)
             {
                 return NotFound();
@@ -139,14 +158,18 @@ namespace sneakers.Controllers
 
             var sneaker = await _context.Sneaker.FindAsync(id);
             if (sneaker == null)
-            {
+            {// if the sneaker from the db that was passed in if null, then an error is thrown
                 return NotFound();
             }
-            ViewData["BrandId"] = new SelectList(_context.Brand, "BrandId", "BrandType", sneaker.BrandId);
-            ViewData["ConditionId"] = new SelectList(_context.Condition, "ConditionId", "ConditionType", sneaker.ConditionId);
-            ViewData["SizeId"] = new SelectList(_context.Size, "SizeId", "ShoeSize", sneaker.SizeId);
-            ViewData["UserId"] = new SelectList(_context.ApplicationUsers, "Id", "Id", sneaker.UserId);
-            return View(sneaker);
+            var viewModel = new SneakersEditViewModel
+            {
+                Sneaker = sneaker,
+                AvailableBrands = await _context.Brand.ToListAsync(),
+                AvailableConditions = await _context.Condition.ToListAsync(),
+                AvailableSizes = await _context.Size.ToListAsync()
+            };
+
+            return View(viewModel);
         }
 
         // POST: Sneakers/Edit/5
@@ -154,17 +177,38 @@ namespace sneakers.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("SneakerId,SizeId,Title,Description,BrandId,IsSold,ConditionId,Price,ImgPath,UserId")] Sneaker sneaker)
+        public async Task<IActionResult> Edit(int id, SneakersEditViewModel viewModel)
         {
+            var sneaker = viewModel.Sneaker;
+
             if (id != sneaker.SneakerId)
             {
                 return NotFound();
+            }
+
+            ModelState.Remove("Sneaker.Brand");
+            ModelState.Remove("Sneaker.Condition");
+            ModelState.Remove("Sneaker.Size");
+            ModelState.Remove("Sneaker.User");
+            ModelState.Remove("Sneaker.UserId");
+
+            string uniqueFileName = null;
+
+            if (viewModel.Photo != null)
+            {
+                string uploadsFolder = Path.Combine(hostingEnvironment.WebRootPath, "images");
+                uniqueFileName = Guid.NewGuid().ToString() + "_" + viewModel.Photo.FileName;
+                string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                viewModel.Photo.CopyTo(new FileStream(filePath, FileMode.Create));
             }
 
             if (ModelState.IsValid)
             {
                 try
                 {
+                    var currentUser = await GetCurrentUserAsync();
+                    sneaker.UserId = currentUser.Id;
+                    sneaker.ImgPath = uniqueFileName;
                     _context.Update(sneaker);
                     await _context.SaveChangesAsync();
                 }
@@ -179,12 +223,11 @@ namespace sneakers.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(MySneakers));
             }
-            ViewData["BrandId"] = new SelectList(_context.Brand, "BrandId", "BrandType", sneaker.BrandId);
-            ViewData["ConditionId"] = new SelectList(_context.Condition, "ConditionId", "ConditionType", sneaker.ConditionId);
-            ViewData["SizeId"] = new SelectList(_context.Size, "SizeId", "ShoeSize", sneaker.SizeId);
-            ViewData["UserId"] = new SelectList(_context.ApplicationUsers, "Id", "Id", sneaker.UserId);
+            viewModel.AvailableBrands = await _context.Brand.ToListAsync();
+            viewModel.AvailableConditions = await _context.Condition.ToListAsync();
+            viewModel.AvailableSizes = await _context.Size.ToListAsync();
             return View(sneaker);
         }
 
@@ -219,6 +262,23 @@ namespace sneakers.Controllers
             _context.Sneaker.Remove(sneaker);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+        }
+
+        // MY Sneakers, gets all the current user's sneakers 
+        public async Task<IActionResult> MySneakers()
+        {
+            // grab the current user
+            var currentUser = await GetCurrentUserAsync();
+            
+            // grab a list of sneakers
+            var sneakers = await _context.Sneaker.Include(b => b.Brand)
+                .Include(c => c.Condition)
+                .Include(s => s.Size)
+                .Include(u => u.User)
+                .Where(u => u.User == currentUser).ToListAsync();
+
+
+            return View(sneakers);
         }
 
         private bool SneakerExists(int id)
