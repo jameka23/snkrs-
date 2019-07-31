@@ -60,7 +60,9 @@
             <img class="card-img-top imageThumbnail" src="~/images/@Model.ImgPath"
                  asp-append-version="true" />
         </dd>
-
+        <dd class="btn btn-primary">
+            <a class="text-light" asp-action="Create" asp-controller="Messages" asp-route-id="@Model.SneakerId">Message </a>
+        </dd>
     </dl>
 </div>
 <div>

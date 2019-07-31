@@ -1,4 +1,4 @@
-﻿@model sneakers.Models.Message
+﻿@model sneakers.Models.MessagesViewModels.MessagesCreateViewModel
 
 @{
     ViewData["Title"] = "Create";
@@ -12,16 +12,22 @@
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Msg" class="control-label"></label>
-                <input asp-for="Msg" class="form-control" />
-                <span asp-validation-for="Msg" class="text-danger"></span>
+            <div>Message to @ViewBag.ReceiverName </div>
+            <div>
+                @{var photoPath = "~/images/" + (@Model.Sneaker.ImgPath ?? "noimage.jpg"); }
+                <img class="card-img-top imageThumbnail" src="~/images/@Model.Sneaker.ImgPath"
+                        asp-append-version="true" />
             </div>
             <div class="form-group">
+                <label asp-for="Message.Msg" class="control-label"></label>
+                <input asp-for="Message.Msg" class="form-control" />
+                <span asp-validation-for="Message.Msg" class="text-danger"></span>
+            </div>
+            @*<div class="form-group">
                 <label asp-for="SneakerId" class="control-label"></label>
                 <select asp-for="SneakerId" class ="form-control" asp-items="ViewBag.SneakerId"></select>
-            </div>
-            <div class="form-group">
+            </div>*@
+            @*<div class="form-group">
                 <label asp-for="SenderId" class="control-label"></label>
                 <select asp-for="SenderId" class ="form-control" asp-items="ViewBag.SenderId"></select>
             </div>
@@ -29,16 +35,16 @@
                 <label asp-for="RecieverId" class="control-label"></label>
                 <input asp-for="RecieverId" class="form-control" />
                 <span asp-validation-for="RecieverId" class="text-danger"></span>
-            </div>
+            </div>*@
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Create" class="btn btn-info" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index" asp-controller="Sneakers">Back to Sneakers</a>
 </div>
 
 @section Scripts {

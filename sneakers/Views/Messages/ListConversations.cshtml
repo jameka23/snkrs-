@@ -1,0 +1,23 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+
+@model IEnumerable<sneakers.Models.MessagesViewModels.ConversationsViewModel>
+@{
+    ViewData["Title"] = "ListConversations";
+}
+<h1>ListConversations</h1>
+
+<div class="main-container">
+    @foreach (var item in Model)
+    {
+        var photoPath = "~/images/" + (item.Sneaker.ImgPath ?? "noimage.jpg");
+        var currentUserId = SignInManager.UserManager.GetUserId(User);
+        <div>
+            <img class="card-img-top imageThumbnail" src="~/images/@item.Sneaker.ImgPath"
+                 asp-append-version="true" />
+            <div>Buyer: I don't know yet lol </div>
+            <div class="btn btn-info"><a asp-action="Chat" asp-route-sneakerId="@item.SneakerId" asp-route-userId="@currentUserId">Chat</a></div>
+        </div>
+
+    }
+</div>
