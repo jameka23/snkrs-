@@ -46,7 +46,7 @@ namespace sneakers.Controllers
 
 
         // GET: This method will return a list of conversations
-        public IActionResult ListConversations()
+        public async Task<IActionResult> ListConversations()
         {
             using (SqlConnection conn = Connection)
             {
@@ -56,12 +56,12 @@ namespace sneakers.Controllers
                     // to get the user as a sender convo
                     cmd.CommandText = @"SELECT DISTINCT m.SneakerId, m.SenderId
                                         FROM Message m
-                                        INNER JOIN Sneakers s ON s.SneakerId = m.SneakerId
-                                        WHERE RecieverId = @theUserId
-                                        AND S.UserId = @theUserId;";
+                                        INNER JOIN Sneaker s ON s.SneakerId = m.SneakerId
+                                        WHERE m.RecieverId = @theUserId
+                                        AND s.UserId = @theUserId;";
 
                     // parameters
-                    var currentUser = GetCurrentUserAsync();
+                    var currentUser = await GetCurrentUserAsync();
                     cmd.Parameters.Add(new SqlParameter("@theUserId", currentUser.Id));
 
                     SqlDataReader reader = cmd.ExecuteReader();
@@ -83,11 +83,11 @@ namespace sneakers.Controllers
                     // to get the user as a receiver
                     cmd.CommandText = @"SELECT DISTINCT m.SneakerId, m.SenderId
                                         FROM Message m
-                                        INNER JOIN Sneakers s ON s.SneakerId = m.SneakerId
-                                        WHERE RecieverId = @theUserId
-                                        AND NOT S.UserId = @theUserId;";
+                                        INNER JOIN Sneaker s ON s.SneakerId = m.SneakerId
+                                        WHERE m.RecieverId = @curr
+                                        AND NOT s.UserId = @curr;";
 
-                    cmd.Parameters.Add(new SqlParameter("@theUserId", currentUser.Id));
+                    cmd.Parameters.Add(new SqlParameter("@curr", currentUser.Id));
                     SqlDataReader reader1 = cmd.ExecuteReader();
 
                     while (reader1.Read())
@@ -108,7 +108,7 @@ namespace sneakers.Controllers
         }
 
         // GET: All this does is get the chatMessages for one conversation 
-        public async Task<IActionResult> Chat(int sneakerId, string userId)
+        public async Task<IActionResult> Chat(int sneakerId)
         {
             // userId is the buyer, sneakerId is for the sneaker for sale
             using (SqlConnection conn = Connection)
@@ -124,8 +124,11 @@ namespace sneakers.Controllers
                                                 OR RecieverId = @userId)
                                         ORDER BY Date;";
 
-                    var currentUser = GetCurrentUserAsync();
-                    cmd.Parameters.Add(new SqlParameter("@userId", userId));
+                    var currentUser = await GetCurrentUserAsync();
+                    //var curruserId = currentUser.Id;
+
+
+                    cmd.Parameters.Add(new SqlParameter("@userId", currentUser.Id));
                     cmd.Parameters.Add(new SqlParameter("@sneakerId", sneakerId));
 
                     SqlDataReader reader = await cmd.ExecuteReaderAsync();
@@ -142,16 +145,20 @@ namespace sneakers.Controllers
                             SenderId = reader.GetString(reader.GetOrdinal("SenderId")),
                             RecieverId = reader.GetString(reader.GetOrdinal("RecieverId"))
                         };
-                        var sneaker = _context.Sneaker.Find(reader.GetInt32(reader.GetOrdinal("SneakerId")));
-                        message.Sneaker = sneaker;
                         messages.Add(message);
                     }
 
                     reader.Close();
+                    var sneaker = _context.Sneaker.Find(sneakerId);
+                    //message.Sneaker = sneaker;
+                    ViewBag.User = currentUser.FirstName;
+                    ViewBag.ShoeOwner = sneaker.User.FirstName;
                     var viewModel = new ChatMessagesViewModel
                     {
-                        ChatMessages = messages.OrderBy(m => m.Date).ToList()
+                        ChatMessages = messages.OrderBy(m => m.Date).ToList(),
+                        SneakerId = sneaker.SneakerId
                     };
+                    
                     
                     return View(viewModel);
                 }
@@ -160,7 +167,7 @@ namespace sneakers.Controllers
 
 
         // GET: Messages/Create
-        public async Task<IActionResult> Create(int id)
+        /*public async Task<IActionResult> Create(int id)
         {
             // find the sender from the sneaker id that was passed in
             Sneaker sneaker = await _context.Sneaker.FindAsync(id);
@@ -204,138 +211,172 @@ namespace sneakers.Controllers
             }
             
             return View(viewModel);
+        }*/
+
+        public IActionResult CreateMessage(int sneakerId, string MsgChat)
+        {
+            var viewModel = new ChatMessagesViewModel
+            {
+                SneakerId = sneakerId,
+                MsgChat = MsgChat
+            };
+            return View(viewModel);
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateMessage(int sneakerId, string chatMsg)
+        public async Task<IActionResult> CreateMessage(ChatMessagesViewModel viewModel)
         {
             // find the sender from the sneaker id that was passed in
-            Sneaker sneaker = await _context.Sneaker.FindAsync(sneakerId);
+            Sneaker sneaker = await _context.Sneaker
+                .Include(u => u.User)
+                .FirstOrDefaultAsync(u => u.SneakerId == viewModel.SneakerId);
+
+            ModelState.Remove("Message.Sneaker");
+            ModelState.Remove("Message.Sender");
+            ModelState.Remove("Message.Receiver");
+            ModelState.Remove("Message");
+            //ModelState.Remove("Message.SenderId");
+            //ModelState.Remove("Message.ReceiverId");
 
             var sneakerOwner = sneaker.User;
             var currentUser = await GetCurrentUserAsync();
-            Message message = new Message
+            Message message = new Message()
             {
                 Date = DateTime.Now,
-                Msg = chatMsg,
-                Sender = currentUser,
-                Receiver = sneakerOwner,
+                Msg = viewModel.Message.Msg,
                 SenderId = currentUser.Id,
                 RecieverId = sneakerOwner.Id,
                 Sneaker = sneaker,
                 SneakerId = sneaker.SneakerId
             };
+
             _context.Add(message);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Chat));
+
+
+            //if (ModelState.IsValid)
+            {
+
+                //var theMessage = viewModel.Message;
+                //theMessage.Msg = viewModel.Message.Msg;
+                //theMessage.Date = DateTime.Now;
+                //theMessage.SenderId = currentUser.Id;
+                //theMessage.RecieverId = sneakerOwner.Id;
+                //theMessage.Sneaker = sneaker;
+                //theMessage.SneakerId = sneaker.SneakerId;
+
+                //viewModel.ChatMessages.Add(message);
+            }
+
+            return RedirectToAction(nameof(Chat), new { sneakerId = sneaker.SneakerId});
         }
 
 
         // GET: Messages/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
+        //public async Task<IActionResult> Details(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            var message = await _context.Message
-                .Include(m => m.Sender)
-                .Include(m => m.Sneaker)
-                .FirstOrDefaultAsync(m => m.MessageId == id);
-            if (message == null)
-            {
-                return NotFound();
-            }
+        //    var message = await _context.Message
+        //        .Include(m => m.Sender)
+        //        .Include(m => m.Sneaker)
+        //        .FirstOrDefaultAsync(m => m.MessageId == id);
+        //    if (message == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            return View(message);
-        }
+        //    return View(message);
+        //}
 
-        // GET: Messages/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
+        //// GET: Messages/Edit/5
+        //public async Task<IActionResult> Edit(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            var message = await _context.Message.FindAsync(id);
-            if (message == null)
-            {
-                return NotFound();
-            }
-            ViewData["SenderId"] = new SelectList(_context.ApplicationUsers, "Id", "Id", message.SenderId);
-            ViewData["SneakerId"] = new SelectList(_context.Sneaker, "SneakerId", "Description", message.SneakerId);
-            return View(message);
-        }
+        //    var message = await _context.Message.FindAsync(id);
+        //    if (message == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    ViewData["SenderId"] = new SelectList(_context.ApplicationUsers, "Id", "Id", message.SenderId);
+        //    ViewData["SneakerId"] = new SelectList(_context.Sneaker, "SneakerId", "Description", message.SneakerId);
+        //    return View(message);
+        //}
 
-        // POST: Messages/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("MessageId,Msg,Date,SneakerId,SenderId,RecieverId")] Message message)
-        {
-            if (id != message.MessageId)
-            {
-                return NotFound();
-            }
+        //// POST: Messages/Edit/5
+        //// To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        //// more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Edit(int id, [Bind("MessageId,Msg,Date,SneakerId,SenderId,RecieverId")] Message message)
+        //{
+        //    if (id != message.MessageId)
+        //    {
+        //        return NotFound();
+        //    }
 
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(message);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!MessageExists(message.MessageId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["SenderId"] = new SelectList(_context.ApplicationUsers, "Id", "Id", message.SenderId);
-            ViewData["SneakerId"] = new SelectList(_context.Sneaker, "SneakerId", "Description", message.SneakerId);
-            return View(message);
-        }
+        //    if (ModelState.IsValid)
+        //    {
+        //        try
+        //        {
+        //            _context.Update(message);
+        //            await _context.SaveChangesAsync();
+        //        }
+        //        catch (DbUpdateConcurrencyException)
+        //        {
+        //            if (!MessageExists(message.MessageId))
+        //            {
+        //                return NotFound();
+        //            }
+        //            else
+        //            {
+        //                throw;
+        //            }
+        //        }
+        //        return RedirectToAction(nameof(Index));
+        //    }
+        //    ViewData["SenderId"] = new SelectList(_context.ApplicationUsers, "Id", "Id", message.SenderId);
+        //    ViewData["SneakerId"] = new SelectList(_context.Sneaker, "SneakerId", "Description", message.SneakerId);
+        //    return View(message);
+        //}
 
-        // GET: Messages/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
+        //// GET: Messages/Delete/5
+        //public async Task<IActionResult> Delete(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            var message = await _context.Message
-                .Include(m => m.Sender)
-                .Include(m => m.Sneaker)
-                .FirstOrDefaultAsync(m => m.MessageId == id);
-            if (message == null)
-            {
-                return NotFound();
-            }
+        //    var message = await _context.Message
+        //        .Include(m => m.Sender)
+        //        .Include(m => m.Sneaker)
+        //        .FirstOrDefaultAsync(m => m.MessageId == id);
+        //    if (message == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            return View(message);
-        }
+        //    return View(message);
+        //}
 
-        // POST: Messages/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var message = await _context.Message.FindAsync(id);
-            _context.Message.Remove(message);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
+        //// POST: Messages/Delete/5
+        //[HttpPost, ActionName("Delete")]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> DeleteConfirmed(int id)
+        //{
+        //    var message = await _context.Message.FindAsync(id);
+        //    _context.Message.Remove(message);
+        //    await _context.SaveChangesAsync();
+        //    return RedirectToAction(nameof(Index));
+        //}
 
         private bool MessageExists(int id)
         {

@@ -9,5 +9,7 @@ namespace sneakers.Models.MessagesViewModels
     {
         public List<Message> ChatMessages { get; set; }
         public string MsgChat { get; set; }
+        public int SneakerId { get; set; }
+        public Message Message { get; set; }
     }
 }
