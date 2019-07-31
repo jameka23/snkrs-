@@ -7,7 +7,8 @@ namespace sneakers.Models.MessagesViewModels
 {
     public class MessagesCreateViewModel
     {
-        public string MsgReceiverId { get; set; }
+        public string SneakerOwnerId { get; set; }
+        public string BuyerId { get; set; }
         public Message Message { get; set; }
         public Sneaker Sneaker { get; set; }
     }
