@@ -142,23 +142,21 @@ namespace sneakers.Controllers
                             SenderId = reader.GetString(reader.GetOrdinal("SenderId")),
                             RecieverId = reader.GetString(reader.GetOrdinal("RecieverId"))
                         };
+                        var sneaker = _context.Sneaker.Find(reader.GetInt32(reader.GetOrdinal("SneakerId")));
+                        message.Sneaker = sneaker;
                         messages.Add(message);
                     }
 
                     reader.Close();
-                    List<Message> messagesToDisplay = messages.OrderBy(m => m.Date).ToList();
-                    return View(messagesToDisplay);
+                    var viewModel = new ChatMessagesViewModel
+                    {
+                        ChatMessages = messages.OrderBy(m => m.Date).ToList()
+                    };
+                    
+                    return View(viewModel);
                 }
             }
         }
-
-        // This method will return the actual content(messages) in the conversation
-        //public async Task<IActionResult> Chat()
-        //{
-
-
-        //    return View();
-        //}
 
 
         // GET: Messages/Create
@@ -175,6 +173,7 @@ namespace sneakers.Controllers
                 SneakerOwnerId = sneaker.UserId,
                 BuyerId = currentUser.Id
             };
+
             return View(viewModel);
         }
 
@@ -206,6 +205,31 @@ namespace sneakers.Controllers
             
             return View(viewModel);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateMessage(int sneakerId, string chatMsg)
+        {
+            // find the sender from the sneaker id that was passed in
+            Sneaker sneaker = await _context.Sneaker.FindAsync(sneakerId);
+
+            var sneakerOwner = sneaker.User;
+            var currentUser = await GetCurrentUserAsync();
+            Message message = new Message
+            {
+                Date = DateTime.Now,
+                Msg = chatMsg,
+                Sender = currentUser,
+                Receiver = sneakerOwner,
+                SenderId = currentUser.Id,
+                RecieverId = sneakerOwner.Id,
+                Sneaker = sneaker,
+                SneakerId = sneaker.SneakerId
+            };
+            _context.Add(message);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Chat));
+        }
+
 
         // GET: Messages/Details/5
         public async Task<IActionResult> Details(int? id)

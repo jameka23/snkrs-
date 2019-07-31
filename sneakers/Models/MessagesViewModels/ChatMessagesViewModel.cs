@@ -7,6 +7,7 @@ namespace sneakers.Models.MessagesViewModels
 {
     public class ChatMessagesViewModel
     {
-        public Message Message { get; set; }
+        public List<Message> ChatMessages { get; set; }
+        public string MsgChat { get; set; }
     }
 }

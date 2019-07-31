@@ -1,0 +1,38 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+
+@model sneakers.Models.MessagesViewModels.ChatMessagesViewModel
+@{
+    ViewData["Title"] = "ChatMessages";
+    
+}
+
+<h1>ChatMessages</h1>
+<div>
+    @foreach (var item in Model.ChatMessages)
+{
+    var currentUser = SignInManager.UserManager.GetUserId(User);
+    @ViewBag.sneakerId = item.SneakerId;
+    @if (item.SenderId == currentUser || item.RecieverId == currentUser)
+    {
+        <div class="currentUserMessage">
+            <div class="chatUser">@item.Sneaker.User.FirstName @item.Sneaker.User.LastName</div>
+            <div class="chatMessage">@item.Msg <br /> <span>@item.Date.ToString("MMMM d, hh:mm tt") </span></div>
+        </div>
+    }
+    else
+    { 
+        <div class="otherUserMessage">
+            <div class="chatUser">@item.Sneaker.User.FirstName @item.Sneaker.User.LastName</div>
+            <div class="chatMessage">@item.Msg <br /> <span>@item.Date.ToString("MMMM d, hh:mm tt") </span></div>
+        </div>
+    }
+}
+</div>
+
+<div>
+    <input class="chatInput" autocomplete="off" spellcheck="false" asp-for="@Html.TextBox(@Model.MsgChat)" value=""/>
+    <a asp-action="CreateMessage" asp-controller="Messages"
+       asp-route-sneakerId="@ViewBag.sneakerId" 
+       asp-route-chatMsg="@ViewBag.@Model.MsgChat">Send</a>
+</div>
