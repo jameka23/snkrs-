@@ -146,7 +146,8 @@ namespace sneakers.Controllers
                     }
 
                     reader.Close();
-                    return View();
+                    List<Message> messagesToDisplay = messages.OrderBy(m => m.Date).ToList();
+                    return View(messagesToDisplay);
                 }
             }
         }
@@ -197,7 +198,7 @@ namespace sneakers.Controllers
                 var message = viewModel.Message;
                 message.SenderId = currentUser.Id;
                 message.RecieverId = viewModel.SneakerOwnerId;
-
+                message.Date = DateTime.Now;
                 _context.Add(message);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Chat));
