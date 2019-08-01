@@ -8,37 +8,40 @@
 }
 
 <h1>ChatMessages</h1>
-<div>
-    @foreach (var item in Model.ChatMessages)
-    {
-        var currentUser = SignInManager.UserManager.GetUserId(User);
-        @if (item.SenderId == currentUser || item.RecieverId == currentUser)
-        {
-            <div class="currentUserMessage">
-                <div class="chatUser">@ViewBag.User</div>
-                <div class="chatMessage">@item.Msg <br /> <span>@item.Date.ToString("MMMM d, hh:mm tt") </span></div>
-            </div>
-        }
-        else
-        {
-            <div class="otherUserMessage">
-                <div class="chatUser">@ViewBag.ShoeOwner</div>
-                <div class="chatMessage">@item.Msg <br /> <span>@item.Date.ToString("MMMM d, hh:mm tt") </span></div>
-            </div>
-        }
-    }
-</div>
+<div class="mainMsgContainer">
 
-<div>
-    <form autocomplete="off" class="chatInputForm" asp-action="CreateMessage" asp-controller="Messages">
-        <input type="hidden" asp-for="SneakerId" />
-        @*<input type="hidden" asp-for="Message.Msg" />*@
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        <div class="chatInputDiv">
-            <input class="chatInput" autocomplete="off" spellcheck="false" asp-for="Message.Msg"/>
-            <button type="submit" value="Send" class="submitButton">
-                Send
-            </button>
-        </div>
-    </form>
+    <div>
+        @foreach (var item in Model.ChatMessages)
+        {
+            var currentUser = SignInManager.UserManager.GetUserId(User);
+            @*@if (item.SenderId == currentUser || item.RecieverId == currentUser)*@
+            @if(currentUser == @ViewBag.SneakerOwnerId)
+            {
+                <div class="chatMessage">
+                    <div class="currentUserMessage">@item.Msg <br /> <span>@item.Date.ToString("MMMM d, hh:mm tt") </span></div>
+                    <span>@ViewBag.SneakerOwner</span>
+                </div>
+            }
+            else
+            {
+                <div class="chatMessage">
+                    <div class="otherUserMessage">@item.Msg <br /> <span>@item.Date.ToString("MMMM d, hh:mm tt") </span></div>
+                </div>
+            }
+        }
+    </div>
+
+    <div>
+        <form autocomplete="off" class="chatInputForm" asp-action="CreateMessage" asp-controller="Messages">
+            <input type="hidden" asp-for="SneakerId" />
+            @*<input type="hidden" asp-for="Message.Msg" />*@
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="chatInputDiv">
+                <input class="chatInput" autocomplete="off" spellcheck="false" asp-for="Message.Msg"/>
+                <button type="submit" value="Send" class="submitButton">
+                    Send
+                </button>
+            </div>
+        </form>
+    </div>
 </div>

@@ -11,5 +11,6 @@ namespace sneakers.Models.MessagesViewModels
         public string MsgChat { get; set; }
         public int SneakerId { get; set; }
         public Message Message { get; set; }
+        public string OtherUserId { get; set; }
     }
 }

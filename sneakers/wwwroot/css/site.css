@@ -19,6 +19,15 @@ html {
     }
 }
 
+.mainMsgContainer{
+    margin-left: 40%;
+}
+.chatMessage{
+    display: flex;
+}
+.currentUserMessage{
+    justify-content: flex-start;
+}
 .imageThumbnail {
     height: 75px;
     width: 75px;

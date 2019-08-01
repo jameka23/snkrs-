@@ -196,7 +196,7 @@ namespace sneakers.Migrations
                         {
                             Id = "00000001-ffff-ffff-ffff-ffffffffffff",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "a19455ee-489b-4856-946b-c30f0686cdc0",
+                            ConcurrencyStamp = "c1ec41d6-976c-484b-bcb2-ab987bd7fd76",
                             Email = "jameka.echols@gmail.com",
                             EmailConfirmed = true,
                             FirstName = "Jameka",
@@ -204,7 +204,7 @@ namespace sneakers.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "JAMEKA.ECHOLS@GMAIL.COM",
                             NormalizedUserName = "JAMEKA.ECHOLS@GMAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAECg+Z6JC4M/DrZxF5ZAFtrG+HmZkJ2iywApVdzGt8JDNGKN0gVSIMbvMhcqc8n/vLA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEEceEG1/J10dcCvzRaZuRMqmds2LR8TGW6H+qsHHF/JyO8cLXJlanYPI0t3wzc/3KA==",
                             PhoneNumberConfirmed = false,
                             Rating = 0.0,
                             SecurityStamp = "7f434309-a4d9-48e9-9ebb-8803db794579",
@@ -333,9 +333,7 @@ namespace sneakers.Migrations
                     b.Property<string>("Msg")
                         .IsRequired();
 
-                    b.Property<string>("ReceiverId");
-
-                    b.Property<string>("RecieverId")
+                    b.Property<string>("ReceiverId")
                         .IsRequired();
 
                     b.Property<string>("SenderId")
@@ -641,7 +639,8 @@ namespace sneakers.Migrations
                 {
                     b.HasOne("sneakers.Models.ApplicationUser", "Receiver")
                         .WithMany()
-                        .HasForeignKey("ReceiverId");
+                        .HasForeignKey("ReceiverId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("sneakers.Models.ApplicationUser", "Sender")
                         .WithMany()

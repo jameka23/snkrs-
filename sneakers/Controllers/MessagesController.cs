@@ -57,7 +57,7 @@ namespace sneakers.Controllers
                     cmd.CommandText = @"SELECT DISTINCT m.SneakerId, m.SenderId
                                         FROM Message m
                                         INNER JOIN Sneaker s ON s.SneakerId = m.SneakerId
-                                        WHERE m.RecieverId = @theUserId
+                                        WHERE m.ReceiverId = @theUserId
                                         AND s.UserId = @theUserId;";
 
                     // parameters
@@ -84,7 +84,7 @@ namespace sneakers.Controllers
                     cmd.CommandText = @"SELECT DISTINCT m.SneakerId, m.SenderId
                                         FROM Message m
                                         INNER JOIN Sneaker s ON s.SneakerId = m.SneakerId
-                                        WHERE m.RecieverId = @curr
+                                        WHERE m.SenderId = @curr
                                         AND NOT s.UserId = @curr;";
 
                     cmd.Parameters.Add(new SqlParameter("@curr", currentUser.Id));
@@ -117,16 +117,20 @@ namespace sneakers.Controllers
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"SELECT MessageId, Msg, Date,
-                                               SneakerId, SenderId, RecieverId
+                                               SneakerId, SenderId, ReceiverId
                                         FROM Message
                                         WHERE SneakerId = @sneakerId
                                         AND (SenderId = @userId
-                                                OR RecieverId = @userId)
+                                                OR ReceiverId = @userId)
                                         ORDER BY Date;";
 
                     var currentUser = await GetCurrentUserAsync();
                     //var curruserId = currentUser.Id;
-
+                    var sneakerInQuestion = _context.Sneaker
+                        .Include(u => u.User)
+                        .FirstOrDefault(s => s.SneakerId == sneakerId);
+                    ViewBag.SneakerOwnerId = sneakerInQuestion.UserId;
+                    ViewBag.SneakerOwner = sneakerInQuestion.User.FirstName;
 
                     cmd.Parameters.Add(new SqlParameter("@userId", currentUser.Id));
                     cmd.Parameters.Add(new SqlParameter("@sneakerId", sneakerId));
@@ -143,23 +147,21 @@ namespace sneakers.Controllers
                             Date = reader.GetDateTime(reader.GetOrdinal("Date")),
                             SneakerId = reader.GetInt32(reader.GetOrdinal("SneakerId")),
                             SenderId = reader.GetString(reader.GetOrdinal("SenderId")),
-                            RecieverId = reader.GetString(reader.GetOrdinal("RecieverId"))
+                            ReceiverId = reader.GetString(reader.GetOrdinal("ReceiverId"))
                         };
                         messages.Add(message);
                     }
-
                     reader.Close();
+
                     var sneaker = _context.Sneaker.Find(sneakerId);
-                    //message.Sneaker = sneaker;
                     ViewBag.User = currentUser.FirstName;
-                    ViewBag.ShoeOwner = sneaker.User.FirstName;
+
                     var viewModel = new ChatMessagesViewModel
                     {
                         ChatMessages = messages.OrderBy(m => m.Date).ToList(),
                         SneakerId = sneaker.SneakerId
                     };
-                    
-                    
+
                     return View(viewModel);
                 }
             }
@@ -230,44 +232,119 @@ namespace sneakers.Controllers
             Sneaker sneaker = await _context.Sneaker
                 .Include(u => u.User)
                 .FirstOrDefaultAsync(u => u.SneakerId == viewModel.SneakerId);
+            
+            if(viewModel.ChatMessages == null) // some reason the list of chat messages is never there
+            {
+                using (SqlConnection conn = Connection)
+                {
+                    conn.Open();
+                    using (SqlCommand cmd = conn.CreateCommand())
+                    {
+                        cmd.CommandText = @"SELECT MessageId, Msg, Date,
+                                               SneakerId, SenderId, ReceiverId
+                                        FROM Message
+                                        WHERE SneakerId = @sneakerId
+                                        AND (SenderId = @userId
+                                                OR ReceiverId = @userId)
+                                        ORDER BY Date;";
 
-            ModelState.Remove("Message.Sneaker");
-            ModelState.Remove("Message.Sender");
-            ModelState.Remove("Message.Receiver");
-            ModelState.Remove("Message");
-            //ModelState.Remove("Message.SenderId");
-            //ModelState.Remove("Message.ReceiverId");
+                        var currUser = await GetCurrentUserAsync();
 
+                        cmd.Parameters.Add(new SqlParameter("@userId", currUser.Id));
+                        cmd.Parameters.Add(new SqlParameter("@sneakerId", viewModel.SneakerId));
+
+                        SqlDataReader reader = await cmd.ExecuteReaderAsync();
+                        List<Message> theMsgs = new List<Message>();
+
+                        while (reader.Read())
+                        {
+                            Message message = new Message
+                            {
+                                MessageId = reader.GetInt32(reader.GetOrdinal("MessageId")),
+                                Msg = reader.GetString(reader.GetOrdinal("Msg")),
+                                Date = reader.GetDateTime(reader.GetOrdinal("Date")),
+                                SneakerId = reader.GetInt32(reader.GetOrdinal("SneakerId")),
+                                SenderId = reader.GetString(reader.GetOrdinal("SenderId")),
+                                ReceiverId = reader.GetString(reader.GetOrdinal("ReceiverId"))
+                            };
+                            theMsgs.Add(message);
+                        }
+                        reader.Close();
+                        ViewBag.User = currUser.FirstName;
+
+                        viewModel.ChatMessages = theMsgs.OrderBy(m => m.Date).ToList();
+
+                    }
+                }
+            }// end of the IF statement
             var sneakerOwner = sneaker.User;
             var currentUser = await GetCurrentUserAsync();
-            Message message = new Message()
+
+            var messages = viewModel.ChatMessages; // get all the messages 
+            int messagesLength = 0; // set the length to 0 so it's not null 
+            
+
+            // if the messesages length is not null, then get the count of the messages 
+            // and save it to the variable
+            if(messages != null)
             {
-                Date = DateTime.Now,
-                Msg = viewModel.Message.Msg,
-                SenderId = currentUser.Id,
-                RecieverId = sneakerOwner.Id,
-                Sneaker = sneaker,
-                SneakerId = sneaker.SneakerId
-            };
-
-            _context.Add(message);
-            await _context.SaveChangesAsync();
-
-
-            //if (ModelState.IsValid)
-            {
-
-                //var theMessage = viewModel.Message;
-                //theMessage.Msg = viewModel.Message.Msg;
-                //theMessage.Date = DateTime.Now;
-                //theMessage.SenderId = currentUser.Id;
-                //theMessage.RecieverId = sneakerOwner.Id;
-                //theMessage.Sneaker = sneaker;
-                //theMessage.SneakerId = sneaker.SneakerId;
-
-                //viewModel.ChatMessages.Add(message);
+                int count = 0;
+                foreach(var msg in messages)
+                {
+                    count++;
+                }
+                messagesLength = count;
             }
 
+            // if the messageLength is not 0, it holds msgs 
+            // then grab the last message, no reason, could get first
+            // this if statement is to get the receiver's id
+            if (messagesLength != 0) 
+            {                        
+                Message lastMessage = messages.Last();
+                if (lastMessage.SenderId != currentUser.Id)
+                { // if the current user wasn't the sender of the last message
+                  // that was sent, that means the other user of the viewmodel
+                  //  is the sender so grab that id
+                    viewModel.OtherUserId = lastMessage.SenderId;
+                }
+                else
+                {
+                    // else the other user was the receiver
+                    viewModel.OtherUserId = lastMessage.ReceiverId;
+                }
+
+
+                // now create the message with the correct sender & receiver
+                Message message = new Message()
+                {
+                    Date = DateTime.Now,
+                    Msg = viewModel.Message.Msg,
+                    SenderId = currentUser.Id,
+                    ReceiverId = viewModel.OtherUserId,
+                    Sneaker = sneaker,
+                    SneakerId = sneaker.SneakerId
+                };
+
+                // add that message to the db
+                _context.Add(message);
+                await _context.SaveChangesAsync();
+            }
+            else
+            {
+                // else this is the beginning of a new chat message
+                Message message = new Message()
+                {
+                    Date = DateTime.Now,
+                    Msg = viewModel.Message.Msg,
+                    SenderId = currentUser.Id,
+                    ReceiverId = sneaker.UserId,
+                    Sneaker = sneaker,
+                    SneakerId = sneaker.SneakerId
+                };
+                _context.Add(message);
+                await _context.SaveChangesAsync();
+            }
             return RedirectToAction(nameof(Chat), new { sneakerId = sneaker.SneakerId});
         }
 
