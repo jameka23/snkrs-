@@ -14,12 +14,11 @@
         @foreach (var item in Model.ChatMessages)
         {
             var currentUser = SignInManager.UserManager.GetUserId(User);
-            @*@if (item.SenderId == currentUser || item.RecieverId == currentUser)*@
-            @if(currentUser == @ViewBag.SneakerOwnerId)
+            @if(@item.SenderId == currentUser)
             {
                 <div class="chatMessage">
                     <div class="currentUserMessage">@item.Msg <br /> <span>@item.Date.ToString("MMMM d, hh:mm tt") </span></div>
-                    <span>@ViewBag.SneakerOwner</span>
+                    <span>@ViewBag.curruserName</span>
                 </div>
             }
             else

@@ -131,6 +131,7 @@ namespace sneakers.Controllers
                         .FirstOrDefault(s => s.SneakerId == sneakerId);
                     ViewBag.SneakerOwnerId = sneakerInQuestion.UserId;
                     ViewBag.SneakerOwner = sneakerInQuestion.User.FirstName;
+                    ViewBag.currUserName = currentUser.FirstName;
 
                     cmd.Parameters.Add(new SqlParameter("@userId", currentUser.Id));
                     cmd.Parameters.Add(new SqlParameter("@sneakerId", sneakerId));
