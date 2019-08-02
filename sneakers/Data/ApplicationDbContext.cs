@@ -35,6 +35,7 @@ namespace sneakers.Data
                 .WithOne(l => l.Sneaker)
                 .OnDelete(DeleteBehavior.Restrict);
 
+
             ApplicationUser user1 = new ApplicationUser
             {
                 FirstName = "Jameka",

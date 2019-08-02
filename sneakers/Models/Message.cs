@@ -25,7 +25,7 @@ namespace sneakers.Models
         [Required]
         public ApplicationUser Sender { get; set; }
         [Required]
-        public string RecieverId { get; set; }
+        public string ReceiverId { get; set; }
         public ApplicationUser Receiver { get; set; }
     }
 }

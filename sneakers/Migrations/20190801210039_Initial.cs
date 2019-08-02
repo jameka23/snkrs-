@@ -270,8 +270,7 @@ namespace sneakers.Migrations
                     Date = table.Column<DateTime>(nullable: false, defaultValueSql: "GETDATE()"),
                     SneakerId = table.Column<int>(nullable: false),
                     SenderId = table.Column<string>(nullable: false),
-                    RecieverId = table.Column<string>(nullable: false),
-                    ReceiverId = table.Column<string>(nullable: true)
+                    ReceiverId = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -287,7 +286,7 @@ namespace sneakers.Migrations
                         column: x => x.SenderId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Message_Sneaker_SneakerId",
                         column: x => x.SneakerId,
@@ -299,7 +298,7 @@ namespace sneakers.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "Rating", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "00000001-ffff-ffff-ffff-ffffffffffff", 0, "e786e296-bce4-4daa-a744-672fd367e5df", "jameka.echols@gmail.com", true, "Jameka", "Echols", false, null, "JAMEKA.ECHOLS@GMAIL.COM", "JAMEKA.ECHOLS@GMAIL.COM", "AQAAAAEAACcQAAAAED7z5RCHgGUnhAL6QLVrlasDsz7m5CcKtPrMwX/YmaGVpbIUxtpnYshshffA/GsT/A==", null, false, 0.0, "7f434309-a4d9-48e9-9ebb-8803db794579", false, "jameka.echols@gmail.com" });
+                values: new object[] { "00000001-ffff-ffff-ffff-ffffffffffff", 0, "c1ec41d6-976c-484b-bcb2-ab987bd7fd76", "jameka.echols@gmail.com", true, "Jameka", "Echols", false, null, "JAMEKA.ECHOLS@GMAIL.COM", "JAMEKA.ECHOLS@GMAIL.COM", "AQAAAAEAACcQAAAAEEceEG1/J10dcCvzRaZuRMqmds2LR8TGW6H+qsHHF/JyO8cLXJlanYPI0t3wzc/3KA==", null, false, 0.0, "7f434309-a4d9-48e9-9ebb-8803db794579", false, "jameka.echols@gmail.com" });
 
             migrationBuilder.InsertData(
                 table: "Brand",

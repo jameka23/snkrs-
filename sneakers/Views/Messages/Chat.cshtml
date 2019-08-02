@@ -1,0 +1,49 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+
+@model sneakers.Models.MessagesViewModels.ChatMessagesViewModel
+@{
+    ViewData["Title"] = "Chat";
+
+}
+
+<h1>ChatMessages</h1>
+<div class="mainMsgContainer">
+
+    <div>
+        @foreach (var item in Model.ChatMessages)
+        {
+            var currentUser = SignInManager.UserManager.GetUserId(User);
+            @if(@item.SenderId == currentUser)
+            {
+                <div class="chatMessage">
+                    <div class="currentUserMessage">@item.Msg</div>
+                    <span>@item.Date.ToString("MMMM d, hh:mm tt") </span>
+                    <span>@ViewBag.curruserName</span>
+                    <span><a asp-action="DeleteChatMessage" asp-route-msgId="@item.MessageId" asp-route-sneakerId="@item.SneakerId">Delete</a></span>
+                </div>
+
+            }
+            else
+            {
+                <div class="chatMessage">
+                    <div class="otherUserMessage">@item.Msg <br /> <span>@item.Date.ToString("MMMM d, hh:mm tt") </span></div>
+                </div>
+            }
+        }
+    </div>
+
+    <div>
+        <form autocomplete="off" class="chatInputForm" asp-action="CreateMessage" asp-controller="Messages">
+            <input type="hidden" asp-for="SneakerId" />
+            @*<input type="hidden" asp-for="Message.Msg" />*@
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="chatInputDiv">
+                <input class="chatInput" autocomplete="off" spellcheck="false" asp-for="Message.Msg"/>
+                <button type="submit" value="Send" class="submitButton">
+                    Send
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

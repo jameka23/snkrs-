@@ -34,11 +34,11 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Sneakers" asp-action="Index">Sneakers</a>
                         </li>
-                        @*<li class="nav-item">
-            <a class="nav-link text-dark" asp-area="" asp-controller="Messages" asp-action="Index">Messages</a>
-        </li>*@
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Messages" asp-action="Index">Messages</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Reviews" asp-action="Index">Review</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Messages" asp-action="ListConversations">Messages</a>
                         </li>
                         @if (SignInManager.IsSignedIn(User))
                         {
