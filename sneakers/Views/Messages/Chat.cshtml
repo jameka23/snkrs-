@@ -17,9 +17,12 @@
             @if(@item.SenderId == currentUser)
             {
                 <div class="chatMessage">
-                    <div class="currentUserMessage">@item.Msg <br /> <span>@item.Date.ToString("MMMM d, hh:mm tt") </span></div>
+                    <div class="currentUserMessage">@item.Msg</div>
+                    <span>@item.Date.ToString("MMMM d, hh:mm tt") </span>
                     <span>@ViewBag.curruserName</span>
+                    <span><a asp-action="DeleteChatMessage" asp-route-msgId="@item.MessageId" asp-route-sneakerId="@item.SneakerId">Delete</a></span>
                 </div>
+
             }
             else
             {
