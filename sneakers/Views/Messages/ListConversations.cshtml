@@ -15,7 +15,15 @@
         <div>
             <img class="card-img-top imageThumbnail" src="~/images/@item.Sneaker.ImgPath"
                  asp-append-version="true" />
-            <div>Buyer: I don't know yet lol </div>
+            @*@if (@item.Sneaker.)
+            {
+
+            }
+            else
+            {
+
+            }*@
+            <div>Buyer: </div>
             <div class="btn btn-info"><a asp-action="Chat" asp-route-sneakerId="@item.SneakerId" asp-route-userId="@currentUserId">Chat</a></div>
         </div>
 

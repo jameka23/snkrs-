@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -44,7 +45,7 @@ namespace sneakers.Controllers
             return View(await applicationDbContext.ToListAsync());
         }
 
-
+        [Authorize]
         // GET: This method will return a list of conversations
         public async Task<IActionResult> ListConversations()
         {
