@@ -94,6 +94,7 @@ namespace sneakers.Controllers
             {
                 var review = viewModel.Review;
                 review.User = viewModel.User;
+                review.User.Rating = await CalculateRating(viewModel.User.Id);
                 _context.Add(review);
                 await _context.SaveChangesAsync();
             }
@@ -184,6 +185,31 @@ namespace sneakers.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        private async Task<double> CalculateRating(string userId)
+        {
+            double total = 0.0;
+            int count = 0;
+            double rating = 0.0;
+
+            // grab the user
+            var user = await _context.Users
+                .Include(u => u.Reviews)
+                .Where(u => u.Id == userId)
+                .FirstAsync();
+
+            // this foreach will go through each review that is generated for 
+            // a user and add all the ratings so then we can get an average
+            foreach(var item in user.Reviews)
+            {
+                count++;
+                total += item.Rating;
+            }
+
+            // get the average and return 
+            rating = total / count;
+
+            return rating;
+        }
         private bool ReviewExists(int id)
         {
             return _context.Review.Any(e => e.ReviewId == id);
