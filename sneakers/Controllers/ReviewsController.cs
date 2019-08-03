@@ -58,12 +58,13 @@ namespace sneakers.Controllers
         {
             var user2BeReviewed = await _context.Users.FindAsync(userId);
             var currUser = await GetCurrentUserAsync();
-
+            ViewBag.currUser = currUser.FirstName;
             // reframe from letting user create a review for themselves!
             if (currUser == user2BeReviewed)
             {
                 return RedirectToAction("Index", "Sneakers");
             }
+            
 
             ReviewsCreateViewModel viewModel = new ReviewsCreateViewModel
             {
@@ -82,7 +83,12 @@ namespace sneakers.Controllers
         {
             ModelState.Remove("Review.User");
             ModelState.Remove("Review.UserId");
+            ModelState.Remove("User.FirstName");
+            ModelState.Remove("User.LastName");
             ModelState.Remove("Review.ReviewId");
+
+            var reviewedUser = _context.Users.Find(viewModel.User.Id);
+            viewModel.User = reviewedUser;
 
             if (ModelState.IsValid)
             {

@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using sneakers.Data;
 
 namespace sneakers.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190803045209_UpdateWithReviewer")]
+    partial class UpdateWithReviewer
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -196,7 +198,7 @@ namespace sneakers.Migrations
                         {
                             Id = "00000001-ffff-ffff-ffff-ffffffffffff",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "4e416e30-b3e9-4e1e-a66f-11c0524956e9",
+                            ConcurrencyStamp = "292f321b-55f8-4dd7-aeef-29e57577511d",
                             Email = "jameka.echols@gmail.com",
                             EmailConfirmed = true,
                             FirstName = "Jameka",
@@ -204,7 +206,7 @@ namespace sneakers.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "JAMEKA.ECHOLS@GMAIL.COM",
                             NormalizedUserName = "JAMEKA.ECHOLS@GMAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEK/jKZayV+pS47JHbU3A2FKfJ+Xq1Ot8mQNaAlLM9ZPq5sHb/NGyHM3JVbCRe0G8kw==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEGcNo6oPlCdd0U5vOd3IKtvJma8f+mESvq0tJWL2u0FETUvDrC/STn/bdDsbI7XZhw==",
                             PhoneNumberConfirmed = false,
                             Rating = 0.0,
                             SecurityStamp = "7f434309-a4d9-48e9-9ebb-8803db794579",

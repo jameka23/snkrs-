@@ -18,6 +18,15 @@
     <div>
         <a>Reviews</a>
         <a asp-action="Create" asp-controller="Reviews" asp-route-userId="@Model.User.Id">Write a review!</a>
+        @foreach(var item in @Model.AllReviews)
+        {
+            <div class="card">
+                <div class="card-body">
+                    <span>Reviewer:@item.ReviewerName</span>
+                    <div>@item.ReviewMessage</div>
+                </div>
+            </div>
+        }
     </div>
     <div>
         @foreach(var item in @Model.AllSneakers)

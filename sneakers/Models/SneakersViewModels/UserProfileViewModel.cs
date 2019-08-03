@@ -10,5 +10,6 @@ namespace sneakers.Models.SneakersViewModels
         public ApplicationUser User { get; set; }
 
         public List<Sneaker> AllSneakers { get; set; }
+        public List<Review> AllReviews { get; set; }
     }
 }

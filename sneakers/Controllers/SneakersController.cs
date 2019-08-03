@@ -328,6 +328,9 @@ namespace sneakers.Controllers
                 User = theUserProfile,
                 AllSneakers = await _context.Sneaker.Include(u => u.User)
                     .Where(s => s.UserId == userId4Profile)
+                    .ToListAsync(),
+                AllReviews = await _context.Review.Include(r => r.User)
+                    .Where(r => r.UserId == userId4Profile)
                     .ToListAsync()
             };
 
