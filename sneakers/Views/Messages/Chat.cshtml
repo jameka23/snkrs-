@@ -20,7 +20,7 @@
                     <div class="currentUserMessage">@item.Msg</div>
                     <span>@item.Date.ToString("MMMM d, hh:mm tt") </span>
                     <span>@ViewBag.curruserName</span>
-                    <span><a asp-action="DeleteChatMessage" asp-route-msgId="@item.MessageId" asp-route-sneakerId="@item.SneakerId">Delete</a></span>
+                    <span><a asp-action="DeleteChatMessage" asp-route-otherUserId="@item.ReceiverId" asp-route-msgId="@item.MessageId" asp-route-sneakerId="@item.SneakerId">Delete</a></span>
                 </div>
 
             }
@@ -36,6 +36,7 @@
     <div>
         <form autocomplete="off" class="chatInputForm" asp-action="CreateMessage" asp-controller="Messages">
             <input type="hidden" asp-for="SneakerId" />
+            <input type="hidden" asp-for="@Model.OtherUserId" />
             @*<input type="hidden" asp-for="Message.Msg" />*@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="chatInputDiv">
