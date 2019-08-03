@@ -370,7 +370,7 @@ namespace sneakers.Controllers
         }
 
 
-        public async Task<IActionResult> DeleteChatMessage(int msgId, int sneakerId)
+        public async Task<IActionResult> DeleteChatMessage(int msgId, int sneakerId, string otherUserId)
         {
             var message = await _context.Message
                 .FindAsync(msgId);
@@ -380,7 +380,7 @@ namespace sneakers.Controllers
             _context.Message.Remove(message);
             await _context.SaveChangesAsync();
 
-            return RedirectToAction(nameof(Chat), new {sneakerId = sneaker.SneakerId });
+            return RedirectToAction(nameof(Chat), new {sneakerId = sneaker.SneakerId, otherUserId });
         }
 
         private bool MessageExists(int id)

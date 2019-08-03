@@ -20,7 +20,7 @@
                     <div class="currentUserMessage">@item.Msg</div>
                     <span>@item.Date.ToString("MMMM d, hh:mm tt") </span>
                     <span>@ViewBag.curruserName</span>
-                    <span><a asp-action="DeleteChatMessage" asp-route-msgId="@item.MessageId" asp-route-sneakerId="@item.SneakerId">Delete</a></span>
+                    <span><a asp-action="DeleteChatMessage" asp-route-otherUserId="@item.ReceiverId" asp-route-msgId="@item.MessageId" asp-route-sneakerId="@item.SneakerId">Delete</a></span>
                 </div>
 
             }
