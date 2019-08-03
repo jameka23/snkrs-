@@ -54,7 +54,7 @@ namespace sneakers.Controllers
                 conn.Open();
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
-                    
+                    // get messages where the curr user is the seller , I want all messages where ppl sent me 
                     cmd.CommandText = @"SELECT DISTINCT m.SneakerId, m.SenderId
                                         FROM Message m
                                         INNER JOIN Sneaker s ON s.SneakerId = m.SneakerId
@@ -83,7 +83,7 @@ namespace sneakers.Controllers
                     }
                     reader.Close();
 
-                    
+                    // get me the messages where the curr 
                     cmd.CommandText = @"SELECT DISTINCT m.SneakerId, m.ReceiverId
                                         FROM Message m
                                         INNER JOIN Sneaker s ON s.SneakerId = m.SneakerId

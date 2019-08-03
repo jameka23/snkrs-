@@ -39,7 +39,15 @@ namespace sneakers.Controllers
             ViewData["SearchBar"] = SearchBar;
 
             var currentUser = GetCurrentUserAsync().Result;
-            IQueryable<Sneaker> sneakers = _context.Sneaker.Include(s => s.Brand).Include(s => s.Condition).Include(s => s.Size).Include(s => s.User);
+            IQueryable<Sneaker> sneakers = _context.Sneaker
+                .Include(s => s.Brand)
+                .Include(s => s.Condition)
+                .Include(s => s.Size)
+                .Include(s => s.User)
+                .Where(s => s.IsSold == false);
+
+
+
 
             if (!String.IsNullOrEmpty(searchString))
             {
@@ -341,6 +349,7 @@ namespace sneakers.Controllers
             return View(viewModel);
         }
 
+        // this method will calculate the rating for a user and return that value as a double
         private async Task<double> CalculateRating(string userId)
         {
             double total = 0.0;
