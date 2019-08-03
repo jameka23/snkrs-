@@ -116,6 +116,7 @@ namespace sneakers.Controllers
             }
         }
 
+        [Authorize]
         // GET: All this does is get the chatMessages for one conversation 
         public async Task<IActionResult> Chat(int sneakerId, string otherUserId)
         {
@@ -217,7 +218,7 @@ namespace sneakers.Controllers
             };
             return View(viewModel);
         }
-
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> CreateMessage(ChatMessagesViewModel viewModel)
         {
@@ -373,7 +374,7 @@ namespace sneakers.Controllers
             return RedirectToAction(nameof(Chat), new { sneakerId = sneaker.SneakerId, otherUserId = viewModel.OtherUserId});
         }
 
-
+        [Authorize]
         public async Task<IActionResult> DeleteChatMessage(int msgId, int sneakerId, string otherUserId)
         {
             var message = await _context.Message

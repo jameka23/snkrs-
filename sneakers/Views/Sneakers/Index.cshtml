@@ -60,7 +60,7 @@
                 @Html.DisplayNameFor(model => model.Brand)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.IsSold)
+                Seller
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Condition)
@@ -95,7 +95,7 @@
                         @Html.DisplayFor(modelItem => item.Brand.BrandType)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.IsSold)
+                        (you)
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.Condition.ConditionType)
@@ -130,7 +130,7 @@
                         @Html.DisplayFor(modelItem => item.Brand.BrandType)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.IsSold)
+                        <a asp-action="UserProfile" asp-route-userId4Profile="@item.User.Id">@Html.DisplayFor(modelItem => item.User.FirstName)</a>
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.Condition.ConditionType)

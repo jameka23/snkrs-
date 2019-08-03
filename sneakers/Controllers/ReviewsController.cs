@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using sneakers.Data;
 using sneakers.Models;
+using sneakers.Models.ReviewsViewModels;
 
 namespace sneakers.Controllers
 {
@@ -53,10 +54,24 @@ namespace sneakers.Controllers
         }
 
         // GET: Reviews/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create(string userId)
         {
-            ViewData["UserId"] = new SelectList(_context.ApplicationUsers, "Id", "Id");
-            return View();
+            var user2BeReviewed = await _context.Users.FindAsync(userId);
+            var currUser = await GetCurrentUserAsync();
+            ViewBag.currUser = currUser.FirstName;
+            // reframe from letting user create a review for themselves!
+            if (currUser == user2BeReviewed)
+            {
+                return RedirectToAction("Index", "Sneakers");
+            }
+            
+
+            ReviewsCreateViewModel viewModel = new ReviewsCreateViewModel
+            {
+                User = user2BeReviewed
+            };
+
+            return View(viewModel);
         }
 
         // POST: Reviews/Create
@@ -64,16 +79,26 @@ namespace sneakers.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ReviewId,Rating,UserId")] Review review)
+        public async Task<IActionResult> Create(ReviewsCreateViewModel viewModel)
         {
+            ModelState.Remove("Review.User");
+            ModelState.Remove("Review.UserId");
+            ModelState.Remove("User.FirstName");
+            ModelState.Remove("User.LastName");
+            ModelState.Remove("Review.ReviewId");
+
+            var reviewedUser = _context.Users.Find(viewModel.User.Id);
+            viewModel.User = reviewedUser;
+
             if (ModelState.IsValid)
             {
+                var review = viewModel.Review;
+                review.User = viewModel.User;
                 _context.Add(review);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
             }
-            ViewData["UserId"] = new SelectList(_context.ApplicationUsers, "Id", "Id", review.UserId);
-            return View(review);
+            return RedirectToAction("UserProfile", "Sneakers", new { userId4Profile = viewModel.User.Id });
+
         }
 
         // GET: Reviews/Edit/5

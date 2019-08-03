@@ -15,6 +15,9 @@ namespace sneakers.Models
         [Required]
         public int Rating { get; set; }
         [Required]
+        public string ReviewMessage { get; set; }
+        public string ReviewerName { get; set; }
+        [Required]
         public string UserId { get; set; }
         [Required]
         public ApplicationUser User { get; set; }

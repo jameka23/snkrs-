@@ -108,6 +108,7 @@ namespace sneakers.Controllers
         // POST: Sneakers/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(SneakersCreateViewModel viewModel)
@@ -160,6 +161,7 @@ namespace sneakers.Controllers
         }
 
         // GET: Sneakers/Edit/5
+        [Authorize]
         public async Task<IActionResult> Edit(int? id)
         {
             /*
@@ -206,6 +208,7 @@ namespace sneakers.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [Authorize]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, SneakersEditViewModel viewModel)
         {
@@ -284,6 +287,7 @@ namespace sneakers.Controllers
         }
 
         // POST: Sneakers/Delete/5
+        [Authorize]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -314,6 +318,23 @@ namespace sneakers.Controllers
         private bool SneakerExists(int id)
         {
             return _context.Sneaker.Any(e => e.SneakerId == id);
+        }
+
+        public async Task<IActionResult> UserProfile(string userId4Profile)
+        {
+            var theUserProfile = await _context.Users.FindAsync(userId4Profile);
+            UserProfileViewModel viewModel = new UserProfileViewModel
+            {
+                User = theUserProfile,
+                AllSneakers = await _context.Sneaker.Include(u => u.User)
+                    .Where(s => s.UserId == userId4Profile)
+                    .ToListAsync(),
+                AllReviews = await _context.Review.Include(r => r.User)
+                    .Where(r => r.UserId == userId4Profile)
+                    .ToListAsync()
+            };
+
+            return View(viewModel);
         }
     }
 }
