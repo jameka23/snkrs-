@@ -44,7 +44,7 @@ namespace sneakers.Models
         public virtual ICollection<Message> Messages { get; set; }
         public Sneaker()
         {
-            IsSold = true;
+            IsSold = false;
         }
     }
 }

@@ -12,16 +12,34 @@
     {
         var photoPath = "~/images/" + (item.Sneaker.ImgPath ?? "noimage.jpg");
         var currentUserId = SignInManager.UserManager.GetUserId(User);
-    <div>
-        <img class="card-img-top imageThumbnail" src="~/images/@item.Sneaker.ImgPath"
-             asp-append-version="true" />
-        @if (currentUserId != item.OtherUserId)
-        {
-            // other user
-            <div>Chat with: @item.OtherUser.FirstName </div>
+
+        @if (item.Sneaker.IsSold == true) 
+        {// the sneaker is sold and no longer can be communicated about
+            <div>
+                <img class="card-img-top imageThumbnail" src="~/images/@item.Sneaker.ImgPath"
+                     asp-append-version="true" />
+                @if (currentUserId != item.OtherUserId)
+                {
+                    // other user
+                    <div>Chat with: @item.OtherUser.FirstName </div>
+                }
+                <div>Sneaker is Sold!</div>
+                @*<div class="btn btn-info"><a class="disabled" asp-action="Chat" asp-route-sneakerId="@item.SneakerId" asp-route-otherUserId="@item.OtherUserId">Chat</a></div>*@
+            </div>
         }
-        <div class="btn btn-info"><a asp-action="Chat" asp-route-sneakerId="@item.SneakerId" asp-route-otherUserId="@item.OtherUserId">Chat</a></div>
-    </div>
+        else
+        {
+            <div>
+                <img class="card-img-top imageThumbnail" src="~/images/@item.Sneaker.ImgPath"
+                     asp-append-version="true" />
+                @if (currentUserId != item.OtherUserId)
+                {
+                    // other user
+                    <div>Chat with: @item.OtherUser.FirstName </div>
+                }
+                <div class="btn btn-info"><a asp-action="Chat" asp-route-sneakerId="@item.SneakerId" asp-route-otherUserId="@item.OtherUserId">Chat</a></div>
+            </div>
+        }
 
     }
 </div>
