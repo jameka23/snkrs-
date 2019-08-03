@@ -18,7 +18,7 @@
         @if (currentUserId != @item.Sneaker.UserId)
         {
             // other user
-            <div>Buyer: @item.OtherUser.FirstName </div>
+            <div>Chat with: @item.OtherUser.FirstName </div>
         }
         <div class="btn btn-info"><a asp-action="Chat" asp-route-sneakerId="@item.SneakerId" asp-route-otherUserId="@item.OtherUserId">Chat</a></div>
     </div>
