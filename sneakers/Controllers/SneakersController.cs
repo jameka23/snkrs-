@@ -344,6 +344,12 @@ namespace sneakers.Controllers
             return _context.Sneaker.Any(e => e.SneakerId == id);
         }
 
+        public async Task<IActionResult> MyProfile()
+        {
+            // this is for the curr user profile view
+            return View();
+        }
+
         public async Task<IActionResult> UserProfile(string userId4Profile)
         {
             var theUserProfile = await _context.Users.FindAsync(userId4Profile);
@@ -386,10 +392,19 @@ namespace sneakers.Controllers
                 total += item.Rating;
             }
 
+
             // get the average and return 
             rating = total / count;
-
-            return rating;
+            var checkingRatingValue = double.IsNaN(rating);
+            if (!checkingRatingValue)
+            {
+                return rating;
+            }
+            else
+            {
+                rating = 0.0;
+                return rating;
+            }
         }
     }
 }
