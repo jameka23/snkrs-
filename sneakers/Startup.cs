@@ -72,6 +72,8 @@ namespace sneakers
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
+                routes.MapRoute("types","types",
+                    defaults: new { controller = "Sneakers", action = "Index" });
             });
         }
     }
