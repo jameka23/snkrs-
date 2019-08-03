@@ -300,9 +300,25 @@ namespace sneakers.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var sneaker = await _context.Sneaker.FindAsync(id);
+            Sneaker sneaker = await _context.Sneaker.FindAsync(id);
+            
+            // get all the messages associated with the sneaker that is being deleted
+            List<Message> messages = await _context.Message
+                .Include(m => m.Sneaker)
+                .Where(m => m.SneakerId == sneaker.SneakerId)
+                .ToListAsync();
+
+            // now delete the messages associated with it
+            foreach (var item in messages)
+            {
+                _context.Message.Remove(item);
+                await _context.SaveChangesAsync();
+            }
+
+            // delete the sneaker 
             _context.Sneaker.Remove(sneaker);
             await _context.SaveChangesAsync();
+
             return RedirectToAction(nameof(Index));
         }
 
