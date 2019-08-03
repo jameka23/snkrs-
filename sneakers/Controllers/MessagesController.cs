@@ -104,6 +104,10 @@ namespace sneakers.Controllers
                             OtherUser = _context.Users.Find(reader1.GetString(reader1.GetOrdinal("ReceiverId")))
                         };
                         Conversations.Add(convo);
+                        //ViewBag.OtherUserId = reader1.GetString(reader1.GetOrdinal("ReceiverId"));
+                        //var otherPerson = _context.Users.Find(reader1.GetString(reader1.GetOrdinal("ReceiverId")));
+                        //ViewBag.OtherUserName = otherPerson.FirstName;
+                        
                     }
                     reader1.Close();
                     

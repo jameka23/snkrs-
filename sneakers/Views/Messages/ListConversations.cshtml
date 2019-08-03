@@ -15,7 +15,7 @@
     <div>
         <img class="card-img-top imageThumbnail" src="~/images/@item.Sneaker.ImgPath"
              asp-append-version="true" />
-        @if (currentUserId != @item.Sneaker.UserId)
+        @if (currentUserId != item.OtherUserId)
         {
             // other user
             <div>Chat with: @item.OtherUser.FirstName </div>
