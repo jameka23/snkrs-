@@ -10,6 +10,9 @@ namespace sneakers.Models.MessagesViewModels
         public int SneakerId { get; set; }
         public string UserId { get; set; }
         public Sneaker Sneaker { get; set; }
+        public string OtherUserId { get; set; }
+        public ApplicationUser OtherUser { get; set; }
+
         
     }
 }

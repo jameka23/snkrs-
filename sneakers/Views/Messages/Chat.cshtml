@@ -36,6 +36,7 @@
     <div>
         <form autocomplete="off" class="chatInputForm" asp-action="CreateMessage" asp-controller="Messages">
             <input type="hidden" asp-for="SneakerId" />
+            <input type="hidden" asp-for="@Model.OtherUserId" />
             @*<input type="hidden" asp-for="Message.Msg" />*@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="chatInputDiv">
