@@ -323,6 +323,8 @@ namespace sneakers.Controllers
         public async Task<IActionResult> UserProfile(string userId4Profile)
         {
             var theUserProfile = await _context.Users.FindAsync(userId4Profile);
+
+
             UserProfileViewModel viewModel = new UserProfileViewModel
             {
                 User = theUserProfile,
@@ -334,7 +336,35 @@ namespace sneakers.Controllers
                     .ToListAsync()
             };
 
+            viewModel.User.Rating = await CalculateRating(viewModel.User.Id);
+
             return View(viewModel);
+        }
+
+        private async Task<double> CalculateRating(string userId)
+        {
+            double total = 0.0;
+            int count = 0;
+            double rating = 0.0;
+
+            // grab the user
+            var user = await _context.Users
+                .Include(u => u.Reviews)
+                .Where(u => u.Id == userId)
+                .FirstAsync();
+
+            // this foreach will go through each review that is generated for 
+            // a user and add all the ratings so then we can get an average
+            foreach (var item in user.Reviews)
+            {
+                count++;
+                total += item.Rating;
+            }
+
+            // get the average and return 
+            rating = total / count;
+
+            return rating;
         }
     }
 }
