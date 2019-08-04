@@ -9,7 +9,7 @@ namespace sneakers.Models.SneakersViewModels
     public class MyProfileViewModel
     {
         public ApplicationUser CurrUser { get; set; }
-        public IFormFile Photo { get; set; }
-
+        public List<Review> UserReviews { get; set; }
+        public List<Sneaker> UserSneakers { get; set; }
     }
 }
