@@ -347,6 +347,19 @@ namespace sneakers.Controllers
         public async Task<IActionResult> MyProfile()
         {
             // this is for the curr user profile view
+            var currrentUser = await GetCurrentUserAsync();
+
+            // set that current user to the viewmodel
+            MyProfileViewModel viewModel = new MyProfileViewModel
+            {
+                CurrUser = currrentUser
+            };
+            return View();
+        }
+
+        public async Task<IActionResult> EditProfile()
+        {
+
             return View();
         }
 

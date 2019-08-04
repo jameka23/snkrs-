@@ -21,7 +21,7 @@ namespace sneakers.Models
         [Required]
         [Display(Name = "Last Name")]
         public string LastName { get; set; }
-        //public string ImgPath { get; set; }
+        public string ImgPath { get; set; }
         public double Rating { get; set; }
         public virtual ICollection<Sneaker> Sneakers { get; set; }
 
