@@ -1,0 +1,39 @@
+﻿@model sneakers.Models.SneakersViewModels.MyProfileViewModel
+
+@{
+    ViewData["Title"] = "MyProfile";
+}
+
+<h1>MyProfile</h1>
+<a asp-action="EditProfile">Edit</a>
+@{var photoPath = "~/images/" + (Model.CurrUser.ImgPath ?? "noimage.jpg");}
+<div>
+    <div>@Model.CurrUser.FirstName @Model.CurrUser.LastName</div>
+    <div>@Model.CurrUser.Rating</div>
+    @if (Model.CurrUser.ImgPath != null)
+    {
+        <div>
+            <img class="card-img-top imageThumbnail" src="~/images/@Model.CurrUser.ImgPath"
+                 asp-append-version="true" />
+        </div>
+    }
+
+
+    <div>User's Reviews of Me</div>
+    @foreach (var item in Model.UserReviews)
+    {
+        <div>Review by: @item.ReviewerName</div>
+        <div>@item.ReviewMessage</div>
+        <div>@item.Rating</div>
+    }
+
+    <div>My Sneakers</div>
+    @foreach (var item in Model.UserSneakers)
+    {
+        <div>@item.Title</div>
+        <div>
+            <img class="card-img-top imageThumbnail" src="~/images/@item.ImgPath"
+                 asp-append-version="true" />
+        </div>
+    }
+</div>

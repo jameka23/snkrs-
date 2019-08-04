@@ -86,9 +86,12 @@ namespace sneakers.Controllers
             ModelState.Remove("User.FirstName");
             ModelState.Remove("User.LastName");
             ModelState.Remove("Review.ReviewId");
+            ModelState.Remove("Review.Rating");
+
 
             var reviewedUser = _context.Users.Find(viewModel.User.Id);
             viewModel.User = reviewedUser;
+           
 
             if (ModelState.IsValid)
             {
@@ -199,16 +202,25 @@ namespace sneakers.Controllers
 
             // this foreach will go through each review that is generated for 
             // a user and add all the ratings so then we can get an average
-            foreach(var item in user.Reviews)
+            foreach (var item in user.Reviews)
             {
                 count++;
                 total += item.Rating;
             }
 
+
             // get the average and return 
             rating = total / count;
-
-            return rating;
+            var checkingRatingValue = double.IsNaN(rating);
+            if (!checkingRatingValue)
+            {
+                return rating;
+            }
+            else
+            {
+                rating = 0.0;
+                return rating;
+            }
         }
         private bool ReviewExists(int id)
         {

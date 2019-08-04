@@ -344,6 +344,62 @@ namespace sneakers.Controllers
             return _context.Sneaker.Any(e => e.SneakerId == id);
         }
 
+        public async Task<IActionResult> MyProfile()
+        {
+            // this is for the curr user profile view
+            var currrentUser = await GetCurrentUserAsync();
+            var userReviews = _context.Review.Where(c => c.UserId == currrentUser.Id).ToList();
+
+
+            var userSneakers = await _context.Sneaker.Include(b => b.Brand)
+                .Include(c => c.Condition)
+                .Include(s => s.Size)
+                .Include(u => u.User)
+                .Where(u => u.User == currrentUser).ToListAsync();
+
+            // set that current user and their reviews to the viewmodel
+            MyProfileViewModel viewModel = new MyProfileViewModel
+            {
+                CurrUser = currrentUser,
+                UserReviews = userReviews,
+                UserSneakers = userSneakers
+            };
+            return View(viewModel);
+        }
+
+        public async Task<IActionResult> EditProfile()
+        {
+            MyProfileEditViewModel viewModel = new MyProfileEditViewModel
+            {
+                User = await GetCurrentUserAsync()
+            };
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditProfile(MyProfileEditViewModel viewModel)
+        {
+
+            string uniqueFileName = null;
+
+            if (viewModel.Photo != null)
+            {
+                string uploadsFolder = Path.Combine(hostingEnvironment.WebRootPath, "images");
+                uniqueFileName = Guid.NewGuid().ToString() + "_" + viewModel.Photo.FileName;
+                string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                viewModel.Photo.CopyTo(new FileStream(filePath, FileMode.Create));
+            }
+
+            var currentUser = await GetCurrentUserAsync();
+            var rating = await CalculateRating(currentUser.Id);
+            currentUser.Rating = rating;
+            currentUser.ImgPath = uniqueFileName;
+            _context.Update(currentUser);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(MyProfile));
+        }
+
         public async Task<IActionResult> UserProfile(string userId4Profile)
         {
             var theUserProfile = await _context.Users.FindAsync(userId4Profile);
@@ -386,10 +442,19 @@ namespace sneakers.Controllers
                 total += item.Rating;
             }
 
+
             // get the average and return 
             rating = total / count;
-
-            return rating;
+            var checkingRatingValue = double.IsNaN(rating);
+            if (!checkingRatingValue)
+            {
+                return rating;
+            }
+            else
+            {
+                rating = 0.0;
+                return rating;
+            }
         }
     }
 }
