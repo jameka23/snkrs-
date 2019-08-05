@@ -19,21 +19,11 @@ html {
     }
 }
 
-.mainMsgContainer{
-    margin-left: 40%;
+.thebody{
+    background-color: gray;
 }
-.chatMessage{
-    display: flex;
-    border: red solid 1px;
-}
-.currentUserMessage{
-    justify-content: flex-end;
-    border: black dotted 2px;
-}
-.imageThumbnail {
-    height: 75px;
-    width: 75px;
-}
+
+
 
 .border-top {
     border-top: 1px solid #e5e5e5;
