@@ -220,13 +220,9 @@ namespace sneakers.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, SneakersEditViewModel viewModel)
         {
+
             var sneaker = viewModel.Sneaker;
-            var currUser = await GetCurrentUserAsync();
-            if(currUser.Id != sneaker.User.Id)
-            {
-                // wrong person 
-                return RedirectToAction(nameof(Index));
-            }
+            var sneaker4Image = viewModel.Sneaker.ImgPath;
 
             if (id != sneaker.SneakerId)
             {
@@ -253,9 +249,20 @@ namespace sneakers.Controllers
             {
                 try
                 {
+                    
                     var currentUser = await GetCurrentUserAsync();
                     sneaker.UserId = currentUser.Id;
-                    sneaker.ImgPath = uniqueFileName;
+                    sneaker.User = currentUser;
+                    if(uniqueFileName != null)
+                    {
+                        sneaker.ImgPath = uniqueFileName;
+                    }
+                    else
+                    {
+
+                        sneaker.ImgPath = sneaker4Image;
+                    }
+                    
                     _context.Update(sneaker);
                     await _context.SaveChangesAsync();
                 }
@@ -386,6 +393,7 @@ namespace sneakers.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditProfile(MyProfileEditViewModel viewModel)
         {
+            var userImage = viewModel.User.ImgPath;
 
             string uniqueFileName = null;
 
@@ -397,10 +405,20 @@ namespace sneakers.Controllers
                 viewModel.Photo.CopyTo(new FileStream(filePath, FileMode.Create));
             }
 
+
             var currentUser = await GetCurrentUserAsync();
+            if (uniqueFileName != null)
+            {
+                currentUser.ImgPath = uniqueFileName;
+            }
+            else
+            {
+
+                currentUser.ImgPath = userImage;
+            }
             var rating = await CalculateRating(currentUser.Id);
             currentUser.Rating = rating;
-            currentUser.ImgPath = uniqueFileName;
+            //currentUser.ImgPath = uniqueFileName;
             _context.Update(currentUser);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(MyProfile));
