@@ -44,7 +44,7 @@
         <h4>Search results for "@ViewData["currentFilter"]"</h4>
     }
 }
-<table class="table">
+@*<table class="table">
     <thead>
         <tr>
             <th>
@@ -149,4 +149,44 @@
             }
         }
     </tbody>
-</table>
+</table>*@
+
+<div class="mainSnkrIndex">
+    @foreach (var item in Model)
+    {
+        var photoPath = "~/images/" + (item.ImgPath ?? "noimage.jpg");
+        var currentUser = SignInManager.UserManager.GetUserId(User);
+        @if (item.UserId == currentUser)
+        {
+            <div class="card" style="width: 18rem;">
+                <img class="card-img-top imageThumbnail" src="~/images/@item.ImgPath"
+                     asp-append-version="true" />
+                <div class="card-body shoeCard text-center">
+                    <h5 class="card-title">@item.Title</h5>
+                    <h5 class="card-text">$@item.Price</h5>
+                    <div class="btn-group-sm">
+                        <a class="btn btn-outline-success" asp-action="Edit" asp-route-id="@item.SneakerId">Edit</a> |
+                        <a class="btn btn-outline-danger" asp-action="Delete" asp-route-id="@item.SneakerId">Delete</a>
+                    </div>
+                </div>
+            </div>
+        }// end if
+        else
+        {
+            <div class="card" style="width: 18rem;">
+                <img class="card-img-top imageThumbnail" src="~/images/@item.ImgPath"
+                     asp-append-version="true" />
+                <div class="card-body shoeCard text-center">
+                    <h5 class="card-title">@item.Title</h5>
+                    <h5 class="card-text">$@item.Price</h5>
+                    <p>
+                        <a class="cardLink" asp-action="UserProfile" asp-route-userId4Profile="@item.User.Id">Seller: @item.User.FirstName</a>
+                    </p>
+                    <div class="btn-group-sm">
+                        <a  class="btn btn-outline-dark" asp-action="Details" asp-route-id="@item.SneakerId">Details</a>
+                    </div>
+                </div>
+            </div>
+        }// end else
+    }
+</div>
