@@ -221,6 +221,12 @@ namespace sneakers.Controllers
         public async Task<IActionResult> Edit(int id, SneakersEditViewModel viewModel)
         {
             var sneaker = viewModel.Sneaker;
+            var currUser = await GetCurrentUserAsync();
+            if(currUser.Id != sneaker.User.Id)
+            {
+                // wrong person 
+                return RedirectToAction(nameof(Index));
+            }
 
             if (id != sneaker.SneakerId)
             {

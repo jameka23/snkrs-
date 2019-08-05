@@ -8,19 +8,18 @@
 }
 
 <h1>ChatMessages</h1>
-<div class="mainMsgContainer">
+<div class="mainMsgContainer card">
 
-    <div>
+    <div class="card-body">
         @foreach (var item in Model.ChatMessages)
         {
             var currentUser = SignInManager.UserManager.GetUserId(User);
             @if(@item.SenderId == currentUser)
             {
-                <div class="chatMessage">
-                    <div class="currentUserMessage">@item.Msg</div>
-                    <span>@item.Date.ToString("MMMM d, hh:mm tt") </span>
-                    <span>@ViewBag.curruserName</span>
-                    <span><a asp-action="DeleteChatMessage" asp-route-otherUserId="@item.ReceiverId" asp-route-msgId="@item.MessageId" asp-route-sneakerId="@item.SneakerId">Delete</a></span>
+                <div class="chatMessage currentUserMessage">
+                    <div class="">@item.Msg</div>
+                    <span>@item.Date.ToString("MMMM d, hh:mm tt") @ViewBag.curruserName</span>
+                    <span class="btn btn-dark"><a asp-action="DeleteChatMessage" asp-route-otherUserId="@item.ReceiverId" asp-route-msgId="@item.MessageId" asp-route-sneakerId="@item.SneakerId">Delete</a></span>
                 </div>
 
             }
@@ -39,9 +38,9 @@
             <input type="hidden" asp-for="@Model.OtherUserId" />
             @*<input type="hidden" asp-for="Message.Msg" />*@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="chatInputDiv">
+            <div class="chatInputDiv form-inline">
                 <input class="chatInput" autocomplete="off" spellcheck="false" asp-for="Message.Msg"/>
-                <button type="submit" value="Send" class="submitButton">
+                <button type="submit" value="Send" class="btn btn-primary submitButton">
                     Send
                 </button>
             </div>
