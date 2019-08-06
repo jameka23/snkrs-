@@ -29,10 +29,13 @@
 
             </div>
 
-            <input type="text" name="SearchString" value="@ViewData["currentFilter"]" />
-            <input type="submit" value="Search" class="btn btn-default" />
+            <div class="form-group">
+                <input type="text" name="SearchString" value="@ViewData["currentFilter"]" />
+                <input type="submit" value="Search" class="btn btn-outline-dark" />
+            </div>
             @{ if (ViewData["currentFilter"] != null)
-                {<a asp-action="Index">Back to Full List</a>
+                {
+                    <a asp-action="Index">Back to Full List</a>
                 }
             }
         </p>

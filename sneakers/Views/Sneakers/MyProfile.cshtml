@@ -1,39 +1,59 @@
 ﻿@model sneakers.Models.SneakersViewModels.MyProfileViewModel
 
 @{
-    ViewData["Title"] = "MyProfile";
+    ViewData["Title"] = "My Profile";
 }
 
-<h1>MyProfile</h1>
-<a asp-action="EditProfile">Edit</a>
+<h1 class="profileHeader">My Profile</h1>
+
 @{var photoPath = "~/images/" + (Model.CurrUser.ImgPath ?? "noimage.jpg");}
-<div>
-    <div>@Model.CurrUser.FirstName @Model.CurrUser.LastName</div>
-    <div>@Model.CurrUser.Rating</div>
-    @if (Model.CurrUser.ImgPath != null)
-    {
-        <div>
-            <img class="card-img-top imageThumbnail" src="~/images/@Model.CurrUser.ImgPath"
-                 asp-append-version="true" />
+<div class="profile">
+    <div class="userProfile card text-center">
+        <div class="card-header font-weight-bold">@Model.CurrUser.FirstName @Model.CurrUser.LastName</div>
+        <div class="card-body">
+            <div class="card">
+                <div class="card-body">
+                    @if (Model.CurrUser.ImgPath != null)
+                    {
+                        <img class="card-img-top imageThumbnail" src="~/images/@Model.CurrUser.ImgPath"
+                             asp-append-version="true" />
+                    }
+                    <div class="card-header ">Rating: @Model.CurrUser.Rating</div>
+                </div>
+                <a class="btn btn-outline-success userRating" asp-action="EditProfile">Edit</a>
+            </div>
         </div>
-    }
+    </div>
 
-
-    <div>User's Reviews of Me</div>
-    @foreach (var item in Model.UserReviews)
-    {
-        <div>Review by: @item.ReviewerName</div>
-        <div>@item.ReviewMessage</div>
-        <div>@item.Rating</div>
-    }
-
-    <div>My Sneakers</div>
-    @foreach (var item in Model.UserSneakers)
-    {
-        <div>@item.Title</div>
-        <div>
-            <img class="card-img-top imageThumbnail" src="~/images/@item.ImgPath"
-                 asp-append-version="true" />
+    <div class="reviewsProfile card text-center">
+        <div class="card-header font-weight-bold">Reviews About Me</div>
+        <div class="card-body">
+            @foreach (var item in Model.UserReviews)
+            {
+                <div class="card">
+                    <div class="card-header">@item.ReviewerName said:</div>
+                    <div class="card-body">
+                        <div class="card-text">@item.ReviewMessage</div>
+                        <div class="card-text">Rating: @item.Rating</div>
+                    </div>
+                </div>
+            }
         </div>
-    }
+    </div>
+
+    <div class="sneakersProfile card text-center">
+        <div class="card-header font-weight-bold">My Sneakers</div>
+        @foreach (var item in Model.UserSneakers)
+        {
+            <div class="card-body">
+                <div class="card">
+                    <div class="card-header">@item.Title</div>
+                    <div class="card-body">
+                        <img class="card-img-top imageThumbnail" src="~/images/@item.ImgPath"
+                             asp-append-version="true" />
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
 </div>

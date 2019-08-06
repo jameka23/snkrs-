@@ -1,6 +1,8 @@
 ﻿body {
     background-color: gray;
+    font-family: 'Roboto', sans-serif;
 }
+
 
 .imageThumbnail {
     height: 200px;
@@ -29,7 +31,7 @@
     background-color: gray;
 }
 
-/* SNEAKERS INDEX STYLING */
+                            /* SNEAKERS INDEX STYLING */
 .mainSnkrIndex {
     display: flex;
     flex-flow: wrap;
@@ -49,8 +51,8 @@
     color: darkblue;
 }
                         /* CONVERSATIONS STYLING */
-.convoHeader{
-    margin-left: 35%;
+.convoHeader {
+    margin-left: 40%;
 }
 
 .listConversations {
@@ -70,4 +72,23 @@
 
 .buyer{
     flex-direction: column;
+}
+
+                            /* MY PROFILE STYLING */
+.profile{
+    display:flex;
+    justify-content: space-between;
+}
+
+.userRating{
+    margin-top: 3%;
+}
+
+.profileHeader{
+    margin-left: 40%;
+}
+
+                /* OTHER'S PROFILE STYLING */
+.userProfileHeader{
+    margin-left: 40%;
 }
