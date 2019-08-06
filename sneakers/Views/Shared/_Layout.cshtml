@@ -10,6 +10,9 @@
     <environment include="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
         <link rel="stylesheet" href="~/css/site.css" />
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/StyleSheet.css" />
+
+
     </environment>
     <environment exclude="Development">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
@@ -20,6 +23,8 @@
     </environment>
     <link rel="stylesheet" href="~/css/site.css" />
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/StyleSheet.css" />
+    <link rel="stylesheet" href="@Url.Content("~/Style.css")" type="text/css" />
+    @RenderSection("Style",false)
     <script src="https://kit.fontawesome.com/448a782f99.js"></script>
 
 </head>
@@ -37,7 +42,7 @@
 
                         @if (SignInManager.IsSignedIn(User))
                         {
-                            <a class="navbar-brand" @*asp-controller="Home" asp-action="Index"*@><img src="~/appImages/logo.png" width="60" height="40" class="d-inline-block align-top" /></a>
+                            <a class="navbar-brand"><img src="~/appImages/logo.png" width="60" height="40" class="d-inline-block align-top" /></a>
 
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Sneakers" asp-action="Index">Sneakers</a>

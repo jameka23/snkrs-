@@ -183,10 +183,20 @@
                         <a class="cardLink" asp-action="UserProfile" asp-route-userId4Profile="@item.User.Id">Seller: @item.User.FirstName</a>
                     </p>
                     <div class="btn-group-sm">
-                        <a  class="btn btn-outline-dark" asp-action="Details" asp-route-id="@item.SneakerId">Details</a>
+                        @*<a   onclick="createModal('@Url.Action("Details", "Restaurant" , new {id=item.SneakerId })')" data-id="@item.SneakerId" class="details btn btn-outline-dark" data-toggle="modal"  data-target="#detailsModal" >Details</a>*@
+                        <a class="details btn btn-outline-dark" asp-action="Details" asp-route-id="@item.SneakerId">Details</a>
+
                     </div>
                 </div>
             </div>
         }// end else
     }
 </div>
+
+@section Scripts { <script>
+             function createModal(url){
+          $('#detailModal').load(url);
+          $('#detailsModal').modal('show');
+    }
+        </script>
+}

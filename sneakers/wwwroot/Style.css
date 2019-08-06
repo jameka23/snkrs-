@@ -1,0 +1,73 @@
+﻿body {
+    background-color: gray;
+}
+
+.imageThumbnail {
+    height: 200px;
+    width: auto;
+}
+
+/* MESSAGES | CHAT STYLING */
+.mainMsgContainer {
+    margin-left: 25%;
+    margin-right: 25%;
+    justify-content: center;
+}
+
+.chatMessage {
+    display: flex;
+    flex-direction: column;
+    border: red solid 1px;
+    padding: 0 5px 0 5px;
+    margin: 3px 0 3px 0;
+    border-radius: 15px;
+}
+
+.currentUserMessage {
+    align-items: flex-end;
+    border: black dotted 2px;
+    background-color: gray;
+}
+
+/* SNEAKERS INDEX STYLING */
+.mainSnkrIndex {
+    display: flex;
+    flex-flow: wrap;
+    justify-content: space-around;
+}
+
+.shoeCard {
+    align-content: center;
+}
+
+/*change hyperlink's color*/
+/*a { 
+    color: yellow;
+}*/
+
+.cardLink {
+    color: darkblue;
+}
+                        /* CONVERSATIONS STYLING */
+.convoHeader{
+    margin-left: 35%;
+}
+
+.listConversations {
+    display: flex;
+    flex-direction: row;
+    justify-content:space-around;
+}
+
+.sellerCurrUserContainer {
+    flex-direction: column;
+    margin-bottom: 10%;
+}
+
+.seller{
+    flex-direction:column;
+}
+
+.buyer{
+    flex-direction: column;
+}
