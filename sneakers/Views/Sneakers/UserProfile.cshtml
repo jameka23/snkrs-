@@ -3,30 +3,33 @@
 @{
     ViewData["Title"] = "User Profile";
 }
-<h1 class="userProfileHeader">User Profile</h1>
+<h1 class="userProfileHeader">@Model.User.FirstName's Profile</h1>
 <div class="profile">
     <div class="card">
         <div class="card-header font-weight-bold">
             @Model.User.FirstName @Model.User.LastName
         </div>
-        @if (Model.User.ImgPath != null)
-        {
-            <img class="card-img-top imageThumbnail" src="~/images/@Model.User.ImgPath"
-                 asp-append-version="true" />
-        }
         <div class="card-body">
-            Rating: @Model.User.Rating
+            <div class="card">
+                @if (Model.User.ImgPath != null)
+                {
+                    <img class="card-img-top imageThumbnail" src="~/images/@Model.User.ImgPath"
+                         asp-append-version="true" />
+                }
+                <div class="card-body">
+                    Rating: @Model.User.Rating
+                </div>
+                <a class="btn btn-outline-info" asp-action="Create" asp-controller="Reviews" asp-route-userId="@Model.User.Id">Write a review!</a>
+            </div>
         </div>
-        <a class="btn btn-outline-info" asp-action="Create" asp-controller="Reviews" asp-route-userId="@Model.User.Id">Write a review!</a>
     </div>
     <div class="reviewsProfile">
-        
-        @foreach (var item in @Model.AllReviews)
-        {
-            <div class="reviewsProfile card text-center">
-                <div class="card-header font-weight-bold">
-                    Reviews about @Model.User.FirstName
-                </div>
+        <div class="reviewsProfile card text-center">
+            <div class="card-header font-weight-bold">
+                Reviews about @Model.User.FirstName
+            </div>
+            @foreach (var item in @Model.AllReviews)
+            {
                 <div class="card-body">
                     <div class="card">
                         <div class="card-body">
@@ -36,8 +39,9 @@
                         </div>
                     </div>
                 </div>
-            </div>
-        }
+            }
+        </div>
+
     </div>
     <div class="sneakersProfile card text-center">
         <div class="card-header font-weight-bold">@Model.User.FirstName's Other Sneakers</div>

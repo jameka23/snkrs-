@@ -92,3 +92,9 @@
 .userProfileHeader{
     margin-left: 40%;
 }
+                /* MY SNEAKERS STYLING */
+
+.mykicksContainer{
+    display:flex;
+    flex-wrap:wrap;
+}
