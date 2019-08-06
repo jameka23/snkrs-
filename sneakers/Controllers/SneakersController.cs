@@ -67,7 +67,7 @@ namespace sneakers.Controllers
                         //products.Where(p => p.Title.ToUpper().Contains(searchString.ToUpper())
                         //               || p.City.ToUpper().Contains(searchString.ToUpper()))
                         sneakers = sneakers.Where(s => s.Condition.ConditionType.ToUpper().Contains(searchString.ToUpper())
-                                            || s.Condition.ConditionType.ToUpper().Contains(searchString.ToUpper())
+                                            || s.Brand.BrandType.ToUpper().Contains(searchString.ToUpper())
                                             || s.Size.ShoeSize.ToUpper().Contains(searchString.ToUpper()));
                         break;
                 }
