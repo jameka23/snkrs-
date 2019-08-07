@@ -6,34 +6,34 @@
 <h1 class="userProfileHeader">@Model.User.FirstName's Profile</h1>
 <div class="profile">
     <div class="card">
-        <div class="card-header font-weight-bold">
+        <div class="card-header blackBack font-weight-bold">
             @Model.User.FirstName @Model.User.LastName
         </div>
-        <div class="card-body">
+        <div class="card-body blackBack">
             <div class="card">
                 @if (Model.User.ImgPath != null)
                 {
                     <img class="card-img-top imageThumbnail" src="~/images/@Model.User.ImgPath"
                          asp-append-version="true" />
                 }
-                <div class="card-body">
+                <div class="card-body blackBack">
                     Rating: @Model.User.Rating
                 </div>
-                <a class="btn btn-outline-info" asp-action="Create" asp-controller="Reviews" asp-route-userId="@Model.User.Id">Write a review!</a>
+                <a class=" blackBack btn btn-outline-info"  asp-action="Create" asp-controller="Reviews" asp-route-userId="@Model.User.Id">Write a review!</a>
             </div>
         </div>
     </div>
     <div class="reviewsProfile">
         <div class="reviewsProfile card text-center">
-            <div class="card-header font-weight-bold">
+            <div class="card-header blackBack font-weight-bold">
                 Reviews about @Model.User.FirstName
             </div>
             @foreach (var item in @Model.AllReviews)
             {
-                <div class="card-body">
+                <div class="card-body blackBack">
                     <div class="card">
-                        <div class="card-body">
-                            <span>Reviewer:@item.ReviewerName</span>
+                        <div class="card-body blackBack">
+                            <span>Reviewer: @item.ReviewerName</span>
                             <div>@item.ReviewMessage</div>
                             <div>Rating: @item.Rating</div>
                         </div>
@@ -44,18 +44,18 @@
 
     </div>
     <div class="sneakersProfile card text-center">
-        <div class="card-header font-weight-bold">@Model.User.FirstName's Other Sneakers</div>
+        <div class="card-header blackBack font-weight-bold">@Model.User.FirstName's Other Sneakers</div>
         @foreach (var item in @Model.AllSneakers)
         {
-            <div class="card-body">
+            <div class="card-body blackBack">
                 <div class="card">
-                    <div class="card-header">@item.Title</div>
-                    <div class="card-body">
+                    <div class="card-header blackBack">@item.Title</div>
+                    <div class="card-body blackBack">
                         @{var photoPath = "~/images/" + (item.ImgPath ?? "noimage.jpg"); }
                         <img class="card-img-top imageThumbnail" src="~/images/@item.ImgPath"
                              asp-append-version="true" />
                     </div>
-                    <a class="btn btn-outline-success" asp-action="Details" asp-route-id="@item.SneakerId">Details</a>
+                    <a class=" blackBack btn btn-outline-success" asp-action="Details" asp-route-id="@item.SneakerId">Details</a>
                 </div>
             </div>
         }

@@ -99,6 +99,7 @@
     flex-flow: wrap;
     justify-content: space-between;
     justify-content: center;
+    margin: 0 5px 0 5px;
 }
 
 .userRating{
@@ -110,8 +111,19 @@
     justify-content:center;
 }
 
-                /* OTHER'S PROFILE STYLING */
-.userProfileHeader{
+.userProfile {
+    margin: 5px;
+}
+
+.reviewsProfile {
+    margin: 5px;
+}
+
+.sneakersProfile{
+    margin: 5px;
+}
+/* OTHER'S PROFILE STYLING */
+.userProfileHeader {
     margin-left: 40%;
 }
                 /* MY SNEAKERS STYLING */
