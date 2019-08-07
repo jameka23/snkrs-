@@ -10,6 +10,14 @@
     width: auto;
 }
 
+.blackBack{
+    background-color: black;
+}
+
+.butt {
+    border-color: white;
+    color: white;
+}
 /* MESSAGES | CHAT STYLING */
 .mainMsgContainer {
     margin-left: 25%;
@@ -36,6 +44,7 @@
 .indexHeader{
     display:flex;
     justify-content: center;
+    margin-top: 10%;
 }
 .mainSnkrIndex {
     display: flex;
