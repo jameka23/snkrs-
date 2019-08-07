@@ -161,7 +161,7 @@
         var currentUser = SignInManager.UserManager.GetUserId(User);
         @if (item.UserId == currentUser)
         {
-            <div class="card" style="width: 18rem;">
+            <div class="card kickCard" style="width: 18rem;">
                 <img class="card-img-top imageThumbnail" src="~/images/@item.ImgPath"
                      asp-append-version="true" />
                 <div class="card-body shoeCard text-center blackBack">
@@ -176,7 +176,7 @@
         }// end if
         else
         {
-            <div class="card" style="width: 18rem;">
+            <div class="card kickCard" style="width: 18rem;">
                 <img class="card-img-top imageThumbnail" src="~/images/@item.ImgPath"
                      asp-append-version="true" />
                 <div class="card-body shoeCard text-center blackBack">

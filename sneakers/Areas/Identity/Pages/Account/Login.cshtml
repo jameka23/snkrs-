@@ -5,13 +5,13 @@
     ViewData["Title"] = "Log in";
 }
 
-<h1>@ViewData["Title"]</h1>
 <div class="row">
-    <div class="col-md-4">
+    <div class="loginPic">
+        <img src="~/appImages/background.jpg" />
+    </div>
+    <div class="col-md-4 loginPart">
         <section>
             <form id="account" method="post">
-                <h4>Use a local account to log in.</h4>
-                <hr />
                 <div asp-validation-summary="All" class="text-danger"></div>
                 <div class="form-group">
                     <label asp-for="Input.Email"></label>
@@ -45,10 +45,9 @@
             </form>
         </section>
     </div>
-    <div class="col-md-6 col-md-offset-2">
-        <img class="loginSneaker" src="~/appImages/bred.png"/>
-    </div>
 </div>
+
+
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

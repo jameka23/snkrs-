@@ -4,6 +4,12 @@
     color: white;
 }
 
+                        /*LOGIN PAGE*/
+
+.loginPic{
+    height:300px;
+    width: 300px;
+}
 
 .imageThumbnail {
     height: 200px;
@@ -18,7 +24,11 @@
     border-color: white;
     color: white;
 }
-/* MESSAGES | CHAT STYLING */
+
+
+
+
+                        /* MESSAGES | CHAT STYLING */
 .mainMsgContainer {
     margin-left: 25%;
     margin-right: 25%;
@@ -55,6 +65,7 @@
     color: white;
     border-color: white;
     border-radius: 15px;
+    padding: 7px;
 }
 
 .chatInputDiv {
@@ -62,6 +73,9 @@
     border-color: white;
 }
 
+.icon{
+    font-size:large
+}
 
                             /* SNEAKERS INDEX STYLING */
 .indexHeader{
@@ -80,6 +94,11 @@
 .shoeCard {
     align-content: center;
 }
+
+.kickCard{
+    margin: 5px;
+}
+
 
 /*change hyperlink's color*/
 /*a { 
@@ -147,14 +166,18 @@
 .sneakersProfile{
     margin: 5px;
 }
-/* OTHER'S PROFILE STYLING */
+                                    /* OTHER'S PROFILE STYLING */
 .userProfileHeader {
     margin-left: 40%;
 }
-                /* MY SNEAKERS STYLING */
+                                     /* MY SNEAKERS STYLING */
 
 .mykicksContainer{
     display:flex;
     justify-content:center;
     flex-wrap:wrap;
+}
+
+.kick {
+    margin-left: 5%;
 }
