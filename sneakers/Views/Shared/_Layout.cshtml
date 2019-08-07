@@ -10,6 +10,9 @@
     <environment include="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
         <link rel="stylesheet" href="~/css/site.css" />
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/StyleSheet.css" />
+        <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
+
     </environment>
     <environment exclude="Development">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
@@ -18,8 +21,11 @@
               crossorigin="anonymous"
               integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" />
     </environment>
+    <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="~/css/site.css" />
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/StyleSheet.css" />
+    <link rel="stylesheet" href="@Url.Content("~/Style.css")" type="text/css" />
+    @RenderSection("Style", false)
     <script src="https://kit.fontawesome.com/448a782f99.js"></script>
 
 </head>
@@ -37,7 +43,7 @@
 
                         @if (SignInManager.IsSignedIn(User))
                         {
-                            <a class="navbar-brand" @*asp-controller="Home" asp-action="Index"*@><img src="~/appImages/logo.png" width="60" height="40" class="d-inline-block align-top" /></a>
+                            <a class="navbar-brand"><img src="~/appImages/logo.png" width="60" height="40" class="d-inline-block align-top" /></a>
 
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Sneakers" asp-action="Index">Sneakers</a>
@@ -57,11 +63,11 @@
             </div>
         </nav>
     </header>
-    <div class="container thebody">
+    <div class="container">
         @*<partial name="_CookieConsentPartial" />*@
-        <main role="main" class="pb-3" style="background-color:gray">
+        @*<main role="main" class="pb-3">
+        </main>*@
             @RenderBody()
-        </main>
     </div>
 
     @*<footer class="border-top footer text-muted">

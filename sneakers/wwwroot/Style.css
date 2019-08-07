@@ -1,0 +1,184 @@
+﻿body {
+    background-color: black;
+    font-family: 'Roboto', sans-serif;
+    color: white;
+}
+
+                        /*LOGIN PAGE*/
+
+.loginPic{
+    height:300px;
+    width: 300px;
+}
+
+.imageThumbnail {
+    height: 200px;
+    width: auto;
+}
+
+.blackBack{
+    background-color: black;
+}
+
+.butt {
+    border-color: white;
+    color: white;
+}
+
+
+
+
+                        /* MESSAGES | CHAT STYLING */
+.mainMsgContainer {
+    margin-left: 25%;
+    margin-right: 25%;
+    justify-content: center;
+}
+
+.chatMessage {
+    display: flex;
+    flex-direction: column;
+    padding: 0 5px 0 5px;
+    margin: 3px 0 3px 0;
+    border-radius: 15px;
+}
+
+.currentUserMessage {
+    align-items: flex-end;
+    background-color: dodgerblue;
+    padding: 7px;
+}
+
+.otherUserMessage {
+    background-color: grey;
+    border-radius: 15px;
+    padding: 7px;
+    margin-right:auto;
+}
+
+.userChat {
+    display: flex;
+    align-items: flex-end;
+    flex-direction: column;
+}
+.chatInput {
+    background-color: rgba(0,0,0,0.1);
+    color: white;
+    border-color: white;
+    border-radius: 15px;
+    padding: 7px;
+}
+
+.chatInputDiv {
+    border-radius: 15px;
+    border-color: white;
+}
+
+.icon{
+    font-size:large
+}
+
+                            /* SNEAKERS INDEX STYLING */
+.indexHeader{
+    display:flex;
+    justify-content: center;
+    margin-top: 6%;
+    margin-bottom: 4%;
+
+}
+.mainSnkrIndex {
+    display: flex;
+    flex-flow: wrap;
+    justify-content: space-around;
+}
+
+.shoeCard {
+    align-content: center;
+}
+
+.kickCard{
+    margin: 5px;
+}
+
+
+/*change hyperlink's color*/
+/*a { 
+    color: yellow;
+}*/
+
+/*.searchContainer{
+    margin: 0 25% 0 25%;
+}*/
+
+.cardLink {
+    color: darkblue;
+}
+                        /* CONVERSATIONS STYLING */
+.convoHeader {
+    margin-left: 40%;
+}
+
+.listConversations {
+    display: flex;
+    flex-direction: row;
+    flex-flow: wrap;
+    justify-content:space-around;
+}
+
+.sellerCurrUserContainer {
+    flex-direction: column;
+    margin-bottom: 10%;
+}
+
+.seller{
+    flex-direction:column;
+}
+
+.buyer{
+    flex-direction: column;
+}
+
+                            /* MY PROFILE STYLING */
+.profile{
+    display:flex;
+    flex-flow: wrap;
+    justify-content: space-between;
+    justify-content: center;
+    margin: 0 5px 0 5px;
+}
+
+.userRating{
+    margin-top: 3%;
+}
+
+.profileHeader{
+    display:flex;
+    justify-content:center;
+}
+
+.userProfile {
+    margin: 5px;
+}
+
+.reviewsProfile {
+    margin: 5px;
+}
+
+.sneakersProfile{
+    margin: 5px;
+}
+                                    /* OTHER'S PROFILE STYLING */
+.userProfileHeader {
+    margin-left: 40%;
+}
+                                     /* MY SNEAKERS STYLING */
+
+.mykicksContainer{
+    display:flex;
+    justify-content:center;
+    flex-wrap:wrap;
+}
+
+.kick {
+    margin-left: 5%;
+}

@@ -3,18 +3,18 @@
 
 @model IEnumerable<sneakers.Models.MessagesViewModels.ConversationsViewModel>
 @{
-    ViewData["Title"] = "ListConversations";
+    ViewData["Title"] = "Conversations";
 }
-<h1>ListConversations</h1>
+    <div class="indexHeader"><img src="~/appImages/put.png" /></div>
 
-<div class="main-container">
+@*<div class="main-container">
     @foreach (var item in Model)
     {
         var photoPath = "~/images/" + (item.Sneaker.ImgPath ?? "noimage.jpg");
         var currentUserId = SignInManager.UserManager.GetUserId(User);
 
         @if (item.Sneaker.IsSold == true) 
-        {// the sneaker is sold and no longer can be communicated about
+        {
             <div>
                 <img class="card-img-top imageThumbnail" src="~/images/@item.Sneaker.ImgPath"
                      asp-append-version="true" />
@@ -24,7 +24,6 @@
                     <div>Chat with: @item.OtherUser.FirstName </div>
                 }
                 <div>Sneaker is Sold!</div>
-                @*<div class="btn btn-info"><a class="disabled" asp-action="Chat" asp-route-sneakerId="@item.SneakerId" asp-route-otherUserId="@item.OtherUserId">Chat</a></div>*@
             </div>
         }
         else
@@ -42,4 +41,67 @@
         }
 
     }
+</div>*@
+
+<div class="listConversations">
+    <div class="seller">
+        <h2>Selling Sneakers</h2>
+        @foreach (var item in Model)
+        {
+            var photoPath = "~/images/" + (item.Sneaker.ImgPath ?? "noimage.jpg");
+            var currentUserId = SignInManager.UserManager.GetUserId(User);
+
+
+            @if (currentUserId == item.Sneaker.UserId)
+            {
+                <div class="sellerCurrUserContainer text-center">
+                    <img class="card-img-top imageThumbnail" src="~/images/@item.Sneaker.ImgPath"
+                         asp-append-version="true" />
+                    @if (currentUserId != item.OtherUserId)
+                    {
+                        // other user
+                        <div>Buyer: @item.OtherUser.FirstName </div>
+                    }
+                    @if (item.Sneaker.IsSold == true)
+                    {
+                        <div>Sneaker is Sold!</div>
+                    }
+                    else
+                    {
+                        <a class="btn btn-outline-dark butt" asp-action="Chat" asp-route-sneakerId="@item.SneakerId" asp-route-otherUserId="@item.OtherUserId">Chat</a>
+                    }
+                </div>
+            }
+        }
+    </div> @*end seller div*@
+    <div class="buyer">
+    <h2>Buying Sneakers</h2>
+        @foreach (var item in Model)
+        {
+            var photoPath = "~/images/" + (item.Sneaker.ImgPath ?? "noimage.jpg");
+            var currentUserId = SignInManager.UserManager.GetUserId(User);
+
+
+            @if (currentUserId != item.Sneaker.UserId)
+            {
+                <div class="buyersContainer text-center">
+                    <img class="card-img-top imageThumbnail" src="~/images/@item.Sneaker.ImgPath"
+                         asp-append-version="true" />
+                    @if (currentUserId != item.OtherUserId)
+                    {
+                        // other user
+                        <div>Seller: @item.OtherUser.FirstName </div>
+                    }
+                    @if (item.Sneaker.IsSold == true)
+                    {
+                        <div>Sneaker is Sold!</div>
+                    }
+                    else
+                    {
+                        <a class="btn btn-outline-dark butt" asp-action="Chat" asp-route-sneakerId="@item.SneakerId" asp-route-otherUserId="@item.OtherUserId">Chat</a>
+                    }
+                </div>
+            }
+        }
+    </div> @* end the buyer div*@
 </div>
