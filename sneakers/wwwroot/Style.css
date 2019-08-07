@@ -44,7 +44,9 @@
 .indexHeader{
     display:flex;
     justify-content: center;
-    margin-top: 10%;
+    margin-top: 6%;
+    margin-bottom: 4%;
+
 }
 .mainSnkrIndex {
     display: flex;

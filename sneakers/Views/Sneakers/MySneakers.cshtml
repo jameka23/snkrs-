@@ -4,10 +4,10 @@
     ViewData["Title"] = "My Sneakers";
 }
 
-<h1>My Sneakers</h1>
+    <div class="indexHeader"><img src="~/appImages/put.png" /></div>
 
 <p>
-    <a class="btn btn-outline-dark" asp-action="Create">Create New</a>
+    <a class="btn btn-outline-dark butt" asp-action="Create">Create Sneaker</a>
 </p>
 @*<table class="table">
     <thead>
@@ -86,10 +86,10 @@
     {
         var photoPath = "~/images/" + (item.ImgPath ?? "noimage.jpg");
         <div class="card kick text-center">
-            <div class="card-header">@item.Title</div>
+            <div class="card-header blackBack">@item.Title</div>
             <img class="card-img-top imageThumbnail" src="~/images/@item.ImgPath"
                  asp-append-version="true" />
-            <div class="card-body">
+            <div class="card-body blackBack">
                 <div class="btn-group-sm">
                     <a class="btn btn-outline-success" asp-action="Edit" asp-route-id="@item.SneakerId">Edit</a> |
                     <a class="btn btn-outline-danger" asp-action="Delete" asp-route-id="@item.SneakerId">Delete</a>

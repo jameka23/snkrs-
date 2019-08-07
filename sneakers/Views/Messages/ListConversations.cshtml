@@ -5,7 +5,7 @@
 @{
     ViewData["Title"] = "Conversations";
 }
-<h1 class="convoHeader">Conversations</h1>
+    <div class="indexHeader"><img src="~/appImages/put.png" /></div>
 
 @*<div class="main-container">
     @foreach (var item in Model)
@@ -54,13 +54,13 @@
 
             @if (currentUserId == item.Sneaker.UserId)
             {
-                <div class="sellerCurrUserContainer">
+                <div class="sellerCurrUserContainer text-center">
                     <img class="card-img-top imageThumbnail" src="~/images/@item.Sneaker.ImgPath"
                          asp-append-version="true" />
                     @if (currentUserId != item.OtherUserId)
                     {
                         // other user
-                        <div>Chat with: @item.OtherUser.FirstName </div>
+                        <div>Buyer: @item.OtherUser.FirstName </div>
                     }
                     @if (item.Sneaker.IsSold == true)
                     {
@@ -68,7 +68,7 @@
                     }
                     else
                     {
-                        <a class="btn btn-outline-dark" asp-action="Chat" asp-route-sneakerId="@item.SneakerId" asp-route-otherUserId="@item.OtherUserId">Chat</a>
+                        <a class="btn btn-outline-dark butt" asp-action="Chat" asp-route-sneakerId="@item.SneakerId" asp-route-otherUserId="@item.OtherUserId">Chat</a>
                     }
                 </div>
             }
@@ -84,13 +84,13 @@
 
             @if (currentUserId != item.Sneaker.UserId)
             {
-                <div class="buyersContainer">
+                <div class="buyersContainer text-center">
                     <img class="card-img-top imageThumbnail" src="~/images/@item.Sneaker.ImgPath"
                          asp-append-version="true" />
                     @if (currentUserId != item.OtherUserId)
                     {
                         // other user
-                        <div>Chat with: @item.OtherUser.FirstName </div>
+                        <div>Seller: @item.OtherUser.FirstName </div>
                     }
                     @if (item.Sneaker.IsSold == true)
                     {
@@ -98,7 +98,7 @@
                     }
                     else
                     {
-                        <a class="btn btn-outline-dark" asp-action="Chat" asp-route-sneakerId="@item.SneakerId" asp-route-otherUserId="@item.OtherUserId">Chat</a>
+                        <a class="btn btn-outline-dark butt" asp-action="Chat" asp-route-sneakerId="@item.SneakerId" asp-route-otherUserId="@item.OtherUserId">Chat</a>
                     }
                 </div>
             }
