@@ -8,7 +8,7 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>All Sneakers</h1>
+<div class="indexHeader"><img src="~/appImages/put.png"/></div>
 
 <p>
     <a class="btn btn-outline-dark" asp-action="Create">Create New</a>
@@ -187,7 +187,7 @@
                     </p>
                     <div class="btn-group-sm">
                         @*<a   onclick="createModal('@Url.Action("Details", "Restaurant" , new {id=item.SneakerId })')" data-id="@item.SneakerId" class="details btn btn-outline-dark" data-toggle="modal"  data-target="#detailsModal" >Details</a>*@
-                        <a class="details btn btn-outline-dark" asp-action="Details" asp-route-id="@item.SneakerId">Details</a>
+                        <a class="details btn btn-outline-customs" asp-action="Details" asp-route-id="@item.SneakerId">Details</a>
 
                     </div>
                 </div>

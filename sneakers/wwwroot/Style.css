@@ -1,6 +1,7 @@
 ﻿body {
-    background-color: gray;
+    background-color: black;
     font-family: 'Roboto', sans-serif;
+    color: white;
 }
 
 
@@ -32,6 +33,10 @@
 }
 
                             /* SNEAKERS INDEX STYLING */
+.indexHeader{
+    display:flex;
+    justify-content: center;
+}
 .mainSnkrIndex {
     display: flex;
     flex-flow: wrap;
@@ -47,6 +52,10 @@
     color: yellow;
 }*/
 
+/*.searchContainer{
+    margin: 0 25% 0 25%;
+}*/
+
 .cardLink {
     color: darkblue;
 }
@@ -58,6 +67,7 @@
 .listConversations {
     display: flex;
     flex-direction: row;
+    flex-flow: wrap;
     justify-content:space-around;
 }
 
@@ -77,7 +87,9 @@
                             /* MY PROFILE STYLING */
 .profile{
     display:flex;
+    flex-flow: wrap;
     justify-content: space-between;
+    justify-content: center;
 }
 
 .userRating{
@@ -85,7 +97,8 @@
 }
 
 .profileHeader{
-    margin-left: 40%;
+    display:flex;
+    justify-content:center;
 }
 
                 /* OTHER'S PROFILE STYLING */
@@ -96,5 +109,6 @@
 
 .mykicksContainer{
     display:flex;
+    justify-content:center;
     flex-wrap:wrap;
 }
