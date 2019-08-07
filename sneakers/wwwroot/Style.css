@@ -28,7 +28,6 @@
 .chatMessage {
     display: flex;
     flex-direction: column;
-    border: red solid 1px;
     padding: 0 5px 0 5px;
     margin: 3px 0 3px 0;
     border-radius: 15px;
@@ -36,9 +35,33 @@
 
 .currentUserMessage {
     align-items: flex-end;
-    border: black dotted 2px;
-    background-color: gray;
+    background-color: dodgerblue;
+    padding: 7px;
 }
+
+.otherUserMessage {
+    background-color: grey;
+    border-radius: 15px;
+    padding: 7px;
+}
+
+.userChat {
+    display: flex;
+    align-items: flex-end;
+    flex-direction: column;
+}
+.chatInput {
+    background-color: rgba(0,0,0,0.1);
+    color: white;
+    border-color: white;
+    border-radius: 15px;
+}
+
+.chatInputDiv {
+    border-radius: 15px;
+    border-color: white;
+}
+
 
                             /* SNEAKERS INDEX STYLING */
 .indexHeader{

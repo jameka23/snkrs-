@@ -7,43 +7,48 @@
 
 }
 
-<h1>ChatMessages</h1>
+ <div class="indexHeader"><img src="~/appImages/put.png" /></div>
 <div class="mainMsgContainer card">
 
-    <div class="card-body">
+    <div class="card-body blackBack">
         @foreach (var item in Model.ChatMessages)
         {
             var currentUser = SignInManager.UserManager.GetUserId(User);
-            @if(@item.SenderId == currentUser)
+            @if (@item.SenderId == currentUser)
             {
-                <div class="chatMessage currentUserMessage">
-                    <div class="">@item.Msg</div>
-                    <span>@item.Date.ToString("MMMM d, hh:mm tt") @ViewBag.curruserName</span>
-                    <span class="btn btn-dark"><a asp-action="DeleteChatMessage" asp-route-otherUserId="@item.ReceiverId" asp-route-msgId="@item.MessageId" asp-route-sneakerId="@item.SneakerId">Delete</a></span>
+                <div class="userChat">
+                    <div class="chatMessage currentUserMessage ">
+                        <div class="">@item.Msg</div>
+                        <span style="font-size:small">@item.Date.ToString("MMMM d, hh:mm tt") @ViewBag.curruserName</span>
+                        @*<span class="btn btn-dark"><a asp-action="DeleteChatMessage" asp-route-otherUserId="@item.ReceiverId" asp-route-msgId="@item.MessageId" asp-route-sneakerId="@item.SneakerId">Delete</a></span>*@
+                    </div>
+                    <div class="deleteBtn">
+                        <a asp-action="DeleteChatMessage" asp-route-otherUserId="@item.ReceiverId" asp-route-msgId="@item.MessageId" asp-route-sneakerId="@item.SneakerId"><i class="fas fa-times-circle" style="color:red"></i></a>
+                    </div>
                 </div>
 
             }
             else
             {
                 <div class="chatMessage">
-                    <div class="otherUserMessage">@item.Msg <br /> <span>@item.Date.ToString("MMMM d, hh:mm tt") </span></div>
+                    <div class="otherUserMessage">@item.Msg <br /> <span style="font-size:smaller">@item.Date.ToString("MMMM d, hh:mm tt") </span></div>
                 </div>
             }
         }
+        <div>
+            <form autocomplete="off" class="chatInputForm" asp-action="CreateMessage" asp-controller="Messages">
+                <input type="hidden" asp-for="SneakerId" />
+                <input type="hidden" asp-for="@Model.OtherUserId" />
+                @*<input type="hidden" asp-for="Message.Msg" />*@
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="chatInputDiv form-inline">
+                    <input class="chatInput" autocomplete="off" spellcheck="false" asp-for="Message.Msg" />
+                    <button type="submit" value="Send" class="btn submitButton">
+                        <i class="fas fa-arrow-alt-circle-up" style="color:dodgerblue"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
     </div>
 
-    <div>
-        <form autocomplete="off" class="chatInputForm" asp-action="CreateMessage" asp-controller="Messages">
-            <input type="hidden" asp-for="SneakerId" />
-            <input type="hidden" asp-for="@Model.OtherUserId" />
-            @*<input type="hidden" asp-for="Message.Msg" />*@
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="chatInputDiv form-inline">
-                <input class="chatInput" autocomplete="off" spellcheck="false" asp-for="Message.Msg"/>
-                <button type="submit" value="Send" class="btn btn-primary submitButton">
-                    Send
-                </button>
-            </div>
-        </form>
-    </div>
 </div>
