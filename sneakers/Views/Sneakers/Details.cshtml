@@ -53,7 +53,7 @@
             @Html.DisplayNameFor(model => model.ImgPath)
         </dt>
         <dd>
-            @{var photoPath = "~/images/" + (@Model.ImgPath ?? "noimage.jpg"); }
+            @*@{var photoPath = "~/images/" + (@Model.ImgPath ?? "noimage.jpg"); }*@
             <img class="card-img-top imageThumbnail" src="~/images/@Model.ImgPath"
                     asp-append-version="true" />
         </dd>
@@ -68,30 +68,26 @@
     <a asp-action="Index"><i class="fas fa-arrow-circle-left fa-2x"></i></a>
 </div>
 
-@*<div class="modal fade" id="detailsModal" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content detailModal">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel"></h5>
-            </div>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-            <div class="modal-body">
-                <div>
-                    @{var photoPath = "~/images/" + (@Model.ImgPath ?? "noimage.jpg"); }
-                    <img class="card-img-top imageThumbnail" src="~/images/@Model.ImgPath"
-                         asp-append-version="true" />
-                    <h4>@Model.Title</h4>
-                    <h5>@Model.Description</h5>
-                    <h5>@Model.Brand.BrandType</h5>
-                    <h5>@Model.Condition.ConditionType</h5>
-                    <h5>@Model.Size.ShoeSize</h5>
-                    @{var currentUserId = SignInManager.UserManager.GetUserId(User);}
-                    <a class="text-light btn btn-outline-danger" asp-action="Chat" asp-controller="Messages" asp-route-otherUserId="@Model.UserId" asp-route-sneakerId="@Model.SneakerId">Message</a>
-                </div>
-            </div>
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+<div class="detailsContainer">
+    <div class="detailSneaker">
+        <div class="card">
+            @{var photoPath = "~/images/" + (@Model.ImgPath ?? "noimage.jpg"); }
+            <img class="card-img-top imageThumbnail" src="~/images/@Model.ImgPath"
+                 asp-append-version="true" />
+            <div class="card-body">@Model.Title</div>
         </div>
     </div>
-</div>*@
+    <div class="detailInfo">
+        <div class="card">
+            <div class="card-body">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">@Model.Description</li>
+                    <li class="list-group-item">@Model.Price</li>
+                    <li class="list-group-item">@Model.Brand.BrandType</li>
+                    <li class="list-group-item">@Model.Size</li>
+                    <li class="list-group-item">@Model.Condition.ConditionType</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
