@@ -6,6 +6,7 @@
 
 <div class="indexHeader"><img src="~/appImages/put.png" /></div>
 
+<h4>Create a new sneaker!</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -49,7 +50,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Create" class="btn btn-success" />
             </div>
 
             @section Scripts {
@@ -60,7 +61,7 @@
                     $(this).next('.custom-file-label').html(fileName);
                 });
                 @{await Html.RenderPartialAsync("_ValidationScriptsPartial");
-            });
+            }
                 </script>
             }
         </form>
@@ -68,7 +69,7 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index"><i class="fas fa-arrow-circle-left fa-2x"></i></a>
 </div>
 
 @*@section Scripts {
