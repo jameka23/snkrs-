@@ -182,3 +182,19 @@
 .kick {
     margin-left: 5%;
 }
+
+
+                    /*CREATE SNEAKERS*/
+.goBack{
+    height: 10px;
+    width: 10px;
+}
+
+.modalImage{
+    height: 200px;
+    width: auto;
+}
+
+.chatBtn{
+    color:dodgerblue;
+}

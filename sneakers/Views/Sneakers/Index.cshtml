@@ -183,12 +183,36 @@
                     <h5 class="card-title">@item.Title</h5>
                     <h5 class="card-text">$@item.Price</h5>
                     <p>
-                        <a  asp-action="UserProfile" asp-route-userId4Profile="@item.User.Id">Seller: @item.User.FirstName</a>
+                        <a asp-action="UserProfile" asp-route-userId4Profile="@item.User.Id">Seller: @item.User.FirstName</a>
                     </p>
                     <div class="btn-group-sm">
                         @*<a   onclick="createModal('@Url.Action("Details", "Restaurant" , new {id=item.SneakerId })')" data-id="@item.SneakerId" class="details btn btn-outline-dark" data-toggle="modal"  data-target="#detailsModal" >Details</a>*@
-                        <a class="details btn butt" asp-action="Details" asp-route-id="@item.SneakerId">Details</a>
+                        @*<a class="details btn butt" asp-action="Details" asp-route-id="@item.SneakerId" data-toggle="modal" data-target="#detailsModal">Details</a>*@
+                        <a class="details btn butt" data-toggle="modal" data-target="#detailsModal-@item.SneakerId">Details</a>
 
+                    </div>
+                </div>
+            </div>
+            <div class="modal" id="detailsModal-@item.SneakerId" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header text-center" style="color:black">
+                            @item.Title
+                        </div>
+                        <div class="card">
+                            <div class="modal-body text-center" style="color:black">
+                                <img class="card-img-top modalImage" src="~/images/@item.ImgPath"
+                                     asp-append-version="true" />
+                                <div class="card-body">
+                                    <div class="card-header">@item.Description</div>
+                                    <div class="card-header" style="font-weight:bold">$@item.Price</div>
+                                    <div class="card-header">@item.Brand.BrandType</div>
+                                    <div class="card-header">@item.Size.ShoeSize</div>
+                                    <div class="card-header">@item.Condition.ConditionType</div>
+                                </div>
+                                <a class="text-light" asp-action="Chat" asp-controller="Messages" asp-route-otherUserId="@currentUser" asp-route-sneakerId="@item.SneakerId"><i class="fas fa-comments fa-2x chatBtn"></i></a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -196,10 +220,5 @@
     }
 </div>
 
-@section Scripts { <script>
-             function createModal(url){
-          $('#detailModal').load(url);
-          $('#detailsModal').modal('show');
-    }
-        </script>
-}
+
+

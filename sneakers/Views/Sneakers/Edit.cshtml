@@ -73,7 +73,7 @@
                             $(this).next('.custom-file-label').html(fileName);
                         });
                         @{await Html.RenderPartialAsync("_ValidationScriptsPartial");
-                    });
+                    }
                 </script>
             }
         </form>
@@ -81,7 +81,7 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index"><i class="fas fa-arrow-circle-left fa-2x"></i></a>
 </div>
 
 @*@section Scripts {
