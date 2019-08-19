@@ -29,6 +29,18 @@
 
 
                         /* MESSAGES | CHAT STYLING */
+.userDiv{
+    display:flex;
+    justify-content: center;
+    margin-bottom: 5%;
+}
+
+.otherUserImg{
+    border-radius: 55%;
+    height: 100px;
+}
+
+
 .mainMsgContainer {
     margin-left: 25%;
     margin-right: 25%;
@@ -127,6 +139,10 @@
 
 .sellerCurrUserContainer {
     flex-direction: column;
+    margin-bottom: 10%;
+}
+
+.buyersContainer{
     margin-bottom: 10%;
 }
 

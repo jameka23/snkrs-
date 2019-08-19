@@ -198,6 +198,11 @@ namespace sneakers.Controllers
                     var sneaker = _context.Sneaker.Find(sneakerId);
                     ViewBag.User = currentUser.FirstName;
 
+                    var otherUser = _context.Users.Find(otherUserId);
+
+                    ViewBag.OtherUser = otherUser.FirstName;
+                    ViewBag.OtherUserImg = otherUser.ImgPath;
+
                     var viewModel = new ChatMessagesViewModel
                     {
                         ChatMessages = messages.OrderBy(m => m.Date).ToList(),

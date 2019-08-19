@@ -7,7 +7,11 @@
 
 }
 
- <div class="indexHeader"><img src="~/appImages/put.png" /></div>
+<div class="indexHeader"><img src="~/appImages/put.png" /></div>
+<div class="userDiv" style="display: flex; justify-content:center;">
+    <img class="otherUserImg" style="border-radius:55%; height:100px;" src="~/images/@ViewBag.OtherUserImg" />
+</div>
+<div class="otherUserName" style="display: flex; justify-content:center; margin-bottom: 5%;" >@ViewBag.OtherUser</div>
 <div class="mainMsgContainer card">
 
     <div class="card-body blackBack">
