@@ -210,7 +210,7 @@
                                     <div class="card-header">@item.Size.ShoeSize</div>
                                     <div class="card-header">@item.Condition.ConditionType</div>
                                 </div>
-                                <a class="text-light" asp-action="Chat" asp-controller="Messages" asp-route-otherUserId="@currentUser" asp-route-sneakerId="@item.SneakerId"><i class="fas fa-comments fa-2x chatBtn"></i></a>
+                                <a class="text-light" asp-action="Chat" asp-controller="Messages" asp-route-otherUserId="@item.UserId " asp-route-sneakerId="@item.SneakerId"><i class="fas fa-comments fa-2x chatBtn"></i></a>
                             </div>
                         </div>
                     </div>
